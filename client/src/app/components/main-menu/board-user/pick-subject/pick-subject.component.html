@@ -1,0 +1,54 @@
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<br>
+<div class="container">
+	<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4 pointer">
+       <div class="col" *ngFor="let r of s" (click)="pick(r)">
+		 <div class="card radius-10 border-start border-0 border-3 border-info" >
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div>
+						<p class="mb-0 text-secondary">{{r.naziv}}</p>
+						<h4 class="my-1 text-info" *ngIf="r.obavezanBoolean == true">Obavezan: Da</h4>
+                        <h4 class="my-1 text-info" *ngIf="r.obavezanBoolean == false">Obavezan: Ne</h4>
+						<h4 class="my-1 text-info">ESPB: {{r.espb}}</h4>
+					</div>
+					<div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto"><i class="fa fa-address-book"></i>
+				</div>
+			</div>
+		</div>
+        </div>
+	   </div>
+</div>
+<br>
+<div *ngIf="kliknut">
+<div class="container">
+<div class="row">
+  <div class="col-md-6">
+    <div class="box box-aqua">
+      <div class="box-header ui-sortable-handle" style="cursor: move;">
+        <i class="ion ion-clipboard"></i>
+        <h3 class="box-title">Selected subjects</h3><br>
+      </div>
+      <div class="box-body pointer" *ngFor="let r of odabran">
+        <ul class="todo-list ui-sortable" (click)="delete(r)">
+          <li>
+            <span class="text">{{r.naziv}}</span><br>
+			<span class="text" *ngIf="r.obavezanBoolean == true">Obavezan: Da</span>
+			<span class="text" *ngIf="r.obavezanBoolean == false">Obavezan: Ne</span><br>
+			<span class="text">ESPB: {{r.espb}}</span><br><br>
+			<h3><p><b>Click on subject if you wish to cancel!</b></p></h3>
+          </li>
+        </ul>
+      </div>
+      <div class="box-footer clearfix no-border">
+        <h2><b><p>Total ESPB: {{espbCounter}}</p></b></h2>
+      <button type="button" class="btn btn-default pull-right" (click)="send()"><i class="fa fa-plus"></i> Next</button>
+      </div>
+    </div>
+</div>     
+</div>
+</div>
+</div>
+<div id="snackbar">You can now choose subjects.</div>

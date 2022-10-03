@@ -1,0 +1,165 @@
+<html>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <body>
+    <div class="wrapper">
+        <div style="width: 60%;">
+            <p style="display: inline-block;">Edit silabus for subject:</p><p style="display: inline-block; font-weight: bold;">{{subject}}</p>
+
+            <form accept-charset="UTF-8" [formGroup]="formCreateSilabus" novalidate >
+                <textarea matInput #silabus class="form-control" id="text" maxlength="2000" name="silabus" style="resize: none; width: 100%; height: 100%; border:solid 1px black;" formControlName="silabus" placeholder="Edit silabus" rows="20"></textarea>
+                <mat-hint align="end"> {{silabus.value.length}} / 2000</mat-hint>
+                <br>
+                <button class="btn btn-info" type="button" (click)="save()">Save</button>
+                <label for="" style="padding-left: 10px;"><button class="btn btn-info" type="button" (click)="about()">Cancel</button></label>
+            </form>
+        </div>
+        
+        <div style="width: 100%;">
+            <form [formGroup]="searchForm">
+                <div class="box" style="margin-bottom: 5px; margin-top: 2px;">
+                    <section class="has-search" style="width: 25%;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="number" class="form-control" formControlName="searchIndexNo" (keyup)="applyFilter()" style="height: 30px;" placeholder="Index No.">
+                    </section>
+                    <section class="has-search" style="width: 30%; margin-left: 3px;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="text" class="form-control" formControlName="searchNameSurname" (keyup)="applyFilter()" style="height: 30px;" placeholder="Student">
+                    </section>
+                    <section class="has-search" style="width: 26%;  margin-left: 3px;">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input type="date" class="form-control" formControlName="searchDate" (onChange)="applyFilter()" style="height: 30px;" placeholder="Date of entry">
+                    </section>
+                    <span class="cross" (click)="resetSearch()" *ngIf="this.searchIndexNo != '' || this.searchNameSurname != '' || this.searchDate != ''" title="Reset search">x</span>
+                </div>
+            </form>
+            
+            <section class="mat-elevation-z8" tabindex="0">
+                <table mat-table [dataSource]="dataSource" matSort>
+
+                    <ng-container matColumnDef="indexNo">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> IndexNo </th>
+                        <td mat-cell *matCellDef="let student">  {{student.student.indexNo}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                        <td mat-cell *matCellDef="let student"> {{student.student.student.user.name}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="surname">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header> Surname </th>
+                        <td mat-cell *matCellDef="let student"> {{student.student.student.user.surname}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="dateOfEntry">
+                        <th mat-header-cell *matHeaderCellDef> Date of entry </th>
+                        <td mat-cell *matCellDef="let student"> {{student.student.dateOfEntry}} </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let student; columns: displayedColumns;" (click)="rateStudent(student.student.student.user.id, subjectID)"></tr>
+                      
+                    </table>
+                    <mat-paginator [pageSizeOptions]="[5, 10]" showFirstLastButtons aria-label="Select page of students"></mat-paginator>
+                </section>
+            </div>
+
+            <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+        </div>
+        <hr>
+        <div class="wrapper">
+            <div class="table-responsive" style="width: 60%;">    
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel hideToggle>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Subject details
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Click to see more
+                            <mat-icon>dehaze</mat-icon>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                        <table class="table table-striped table-compact table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Broj predavanja</td>
+                                    <td>{{predmet?.brojPredavanja}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Broj vezbi</td>
+                                    <td>{{predmet?.brojVezbi}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Drugi oblici nastav</td>
+                                    <td>{{predmet?.drugiObliciNastave}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ESPB</td>
+                                    <td>{{predmet?.espb}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Istazivacki rad</td>
+                                    <td>{{predmet?.istrazivackiRad}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Obavezan</td>
+                                    <td>
+                                        <span *ngIf="predmet?.obavezan == true">Da</span>
+                                        <span *ngIf="predmet?.obavezan == false">Ne</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ostali casovi</td>
+                                    <td>{{predmet?.ostaliCasovi}}</td>
+                                </tr>
+                            </tbody>
+                        </table>                                    
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div> 
+                        
+            <div class="table-responsive">    
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel hideToggle>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Subject notifications
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Click to see more
+                            <mat-icon>dehaze</mat-icon>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <section class="example-container mat-elevation-z8" tabindex="0">
+                        <table mat-table [dataSource]="dataSourceNotifications" matSort>
+                      
+                          <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.id}} </td>
+                          </ng-container>
+                      
+                          <ng-container matColumnDef="naziv">
+                            <th mat-header-cell *matHeaderCellDef> Naziv </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.naziv}} </td>
+                          </ng-container>
+                      
+                          <ng-container matColumnDef="opis">
+                            <th mat-header-cell *matHeaderCellDef> Opis </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.opis}} </td>
+                          </ng-container>
+                      
+                          <tr mat-header-row *matHeaderRowDef="displayedColumnsNotifications; sticky: true"></tr>
+                          <tr mat-row *matRowDef="let notifications; columns: displayedColumnsNotifications;" (click)="editNotification(notifications)"></tr>
+                        </table>
+                      </section>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            <button type="button" mat-icon-button color="primary" title="Add new notifications" (click)="addNotification()">
+                <mat-icon style="transform: scale(2); margin-top: 10px;">add_box</mat-icon>
+            </button>
+        </div>   
+    </body>
+</html>

@@ -1,0 +1,93 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div>
+          <button mat-raised-button color="primary" (click)="addNewScientificArea()">Add scientific area</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control"  formControlName="searchName" (keyup)="applyFilter()" placeholder="Scientific area">
+            </div>
+
+            <div class="block" *ngIf="this.searchName != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push"><button mat-raised-button color="warn" (click)="deleteLogical()" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+          
+               <!-- Checkbox Column -->  
+               <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let scientificArea;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(scientificArea) : null"  
+                                  [checked]="selection.isSelected(scientificArea)" 
+                                  [aria-label]="checkboxLabel(scientificArea)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container> 
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let scientificArea">
+                  <td mat-cell> {{scientificArea.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <ng-container *matCellDef="let scientificArea">
+                  <td mat-cell > {{scientificArea.name}} </td>
+                </ng-container>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                  <td mat-cell *matCellDef="let scientificArea" >
+                    <div class="example-button-row" *ngIf="scientificArea.active == true">
+                      <button mat-icon-button color="primary" (click)="selectForChange(scientificArea)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                    <div class="example-button-row" *ngIf="scientificArea.active == false">
+                      <button mat-raised-button color="warn" (click)="deletePhysically(scientificArea['id'])">Delete permanent</button>
+                      <button mat-raised-button color="primary" (click)="return(scientificArea)">Return</button>
+                    </div>
+                  </td>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let scientificArea; columns: displayedColumns;"
+                  [ngClass]="{'make-gold': !scientificArea.active }"
+                  (click)="selection.toggle(scientificArea)"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of scientific area"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>

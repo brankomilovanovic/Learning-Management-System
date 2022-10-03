@@ -1,0 +1,40 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/typerankstable" [routerLink]="['/typerankstable']" class="router-link-active">Type Ranks management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditTypeRank.value.id == null" style="text-align: center;">Add new type rank</h2>
+            <h2 *ngIf="formCreateEditTypeRank.value.id != null" style="text-align: center;">Edit type rank (ID: {{formCreateEditTypeRank.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditTypeRank" novalidate>
+                    <div class="form-group">
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" name="name" formControlName="name" (change)="checkName()" class="example-full-width" required>
+                    </mat-form-field>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="saveRank()" *ngIf="formCreateEditTypeRank.value.id == null">Add new rank</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="saveRank()" *ngIf="formCreateEditTypeRank.value.id != null">Edit rank</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

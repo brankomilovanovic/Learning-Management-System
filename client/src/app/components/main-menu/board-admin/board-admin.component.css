@@ -1,0 +1,179 @@
+.example-button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+
+.textInLine {
+    display: block;
+    height: 10px;
+    border-bottom: solid 1px #000;
+    text-align: center;
+}
+
+.textInLine span {
+    display: inline-block;
+    background-color: #fff;
+    padding: 0 10px;
+}
+
+body{
+  margin-top:20px;
+  background-color: #f7f7ff;
+  }
+  .radius-10 {
+      border-radius: 10px !important;
+  }
+  
+  .border-info {
+      border-left: 5px solid  #0dcaf0 !important;
+  }
+  .border-danger {
+      border-left: 5px solid  #fd3550 !important;
+  }
+  .border-success {
+      border-left: 5px solid  #15ca20 !important;
+  }
+  .border-warning {
+      border-left: 5px solid  #ffc107 !important;
+  }
+  
+  
+  .card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 0px solid rgba(0, 0, 0, 0);
+      border-radius: .25rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+  }
+  .bg-gradient-scooter {
+      background: #17ead9;
+      background: -webkit-linear-gradient( 
+  45deg
+   , #17ead9, #6078ea)!important;
+      background: linear-gradient( 
+  45deg
+   , #17ead9, #6078ea)!important;
+  }
+  .widgets-icons-2 {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #ededed;
+      font-size: 27px;
+      border-radius: 10px;
+  }
+  .rounded-circle {
+      border-radius: 50%!important;
+  }
+  .text-white {
+      color: #fff!important;
+  }
+  .ms-auto {
+      margin-left: auto!important;
+  }
+  .bg-gradient-bloody {
+      background: #f54ea2;
+      background: -webkit-linear-gradient( 
+  45deg
+   , #f54ea2, #ff7676)!important;
+      background: linear-gradient( 
+  45deg
+   , #f54ea2, #ff7676)!important;
+  }
+  
+  .bg-gradient-ohhappiness {
+      background: #00b09b;
+      background: -webkit-linear-gradient( 
+  45deg
+   , #00b09b, #96c93d)!important;
+      background: linear-gradient( 
+  45deg
+   , #00b09b, #96c93d)!important;
+  }
+  
+  .bg-gradient-blooker {
+      background: #ffdf40;
+      background: -webkit-linear-gradient( 
+  45deg
+   , #ffdf40, #ff8359)!important;
+      background: linear-gradient( 
+  45deg
+   , #ffdf40, #ff8359)!important;
+  }
+
+  body {
+    font-family: "Lato", sans-serif;
+  }
+
+
+/* Fixed sidenav, full height */
+.sidenav {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+
+/* Style the sidenav links and the dropdown button */
+.sidenav a, .dropdown-btn {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 20px;
+  color: #818181;
+  display: block;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+/* On mouse-over */
+.sidenav a:hover, .dropdown-btn:hover {
+  color: #f1f1f1;
+}
+
+/* Main content */
+.main {
+  margin-left: 200px; /* Same as the width of the sidenav */
+  font-size: 20px; /* Increased text to enable scrolling */
+  padding: 0px 10px;
+}
+
+/* Add an active class to the active dropdown button */
+.active {
+  background-color: green;
+  color: white;
+}
+
+/* Dropdown container (hidden by default). Optional: add a lighter background color and some left padding to change the design of the dropdown content */
+.dropdown-container {
+  display: none;
+  background-color: #262626;
+  padding-left: 8px;
+}
+
+/* Optional: Style the caret down icon */
+.fa-caret-down {
+  float: right;
+  padding-right: 8px;
+}
+
+/* Some media queries for responsiveness */
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}

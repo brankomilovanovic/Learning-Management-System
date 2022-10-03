@@ -1,0 +1,145 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li *ngIf="role == 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+          <li *ngIf="role != 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/professor" [routerLink]="['/professor']" class="router-link-active">Professor board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div>
+          <button mat-raised-button color="primary" (click)="addNewUniversity()" *ngIf="role == 'ROLE_ADMINISTRATOR'">Add new university</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block" style="margin-left: 8px;">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control"  formControlName="searchName" (keyup)="applyFilter()" placeholder="University">
+            </div>
+
+            <div class="form-group has-search block" *ngIf="this.role == 'ROLE_ADMINISTRATOR'">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control"  formControlName="searchDean" (keyup)="applyFilter()" placeholder="Dean">
+            </div>
+
+            <div class="block" *ngIf="this.searchName != '' || this.searchDean != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push"><button mat-raised-button color="warn" (click)="delete()" *ngIf="role == 'ROLE_ADMINISTRATOR'" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+          
+            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+          
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let university;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(university) : null"  
+                                  [checked]="selection.isSelected(university)" 
+                                  [aria-label]="checkboxLabel(university)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container> 
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell> {{university.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="address">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Address </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell>{{university.address.country}}, {{university.address.city}} {{university.address.streetAndNumber}}</td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="contactDetails">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Contact Details </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell> {{university.contactDetails}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="establishmentDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Establishment Date </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell> {{university.establishmentDate | date:'yyyy-MM-dd' }} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell> {{university.name}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="headmaster">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Dean </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell> {{university.headmaster.user.name}} {{university.headmaster.user.surname}} </td>
+                </ng-container>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <ng-container *matCellDef="let university">
+                  <td mat-cell>
+                    <div class="example-button-row">
+                      <button mat-icon-button color="primary" (click)="selectForChange(university);" title="Edit object">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === university ? null : university); $event.stopPropagation()">
+                        <mat-icon *ngIf="expandedElement !== university">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="expandedElement === university">keyboard_arrow_up</mat-icon>
+                      </button>
+                    </div>
+                </td>
+
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let university" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="university == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="example-element-description" *ngFor="let fc of university.faculty">
+                      <span class="example-element-description-attribution"> Faculty({{fc.id}}) -- </span>
+                      {{fc.name}}
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+              <tr mat-row *matRowDef="let university; columns: columnsToDisplayWithExpand;"
+                  class="example-element-row"
+                  [class.example-expanded-row]="expandedElement === university"
+                  (click)="expandedElement = expandedElement === university ? null : university">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of university"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>

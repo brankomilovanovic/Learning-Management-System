@@ -1,0 +1,52 @@
+<div class="col-md-12">
+    <div class="card card-container">
+      <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="profile-img-card"/>
+      <form (submit)="saveUser()" [formGroup]="formRegistrationUser" novalidate>
+        <div class="form-group">
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Name</mat-label>
+            <input matInput name="name" formControlName="name" class="example-full-width" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Surname</mat-label>
+            <input matInput name="surname" formControlName="surname" class="example-full-width" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Username</mat-label>
+            <input matInput name="username" formControlName="username" class="example-full-width" required>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput placeholder="pat@example.com" formControlName="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+            <mat-error [hidden]="!formRegistrationUser.controls['email'].errors?.pattern">Please enter correct format</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="example-full-width">
+            <mat-label>Password</mat-label>
+            <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+            <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+              <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary btn-block">Registration</button>      
+          <button type="button" (click)="cancel()" mat-raised-button class="btn-block">Cancel</button>
+        </div>
+      </form>
+
+      <div style="text-align: center;">Already have an account? 
+        <a [routerLink]="['/login']">Login now</a>
+      </div>
+
+      <div class="alert alert-warning" *ngIf="isSignUpFailed">
+        Registration failed!<br />{{ errorMessage }}
+      </div> 
+
+    </div>
+</div>

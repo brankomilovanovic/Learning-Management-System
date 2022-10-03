@@ -1,0 +1,82 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/evaluationknowledgetable" [routerLink]="['/evaluationknowledgetable']" class="router-link-active">Evaluation knowledge management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditEvaluationKnowledge.value.id == null" style="text-align: center;">Add new evaluation knowledge</h2>
+            <h2 *ngIf="formCreateEditEvaluationKnowledge.value.id != null" style="text-align: center;">Edit evaluation knowledge (ID: {{formCreateEditEvaluationKnowledge.value.id}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreateEditEvaluationKnowledge" novalidate>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Vreme pocetka</mat-label>
+                        <input matInput type="datetime-local" name="vremePocetka" formControlName="vremePocetka" class="example-full-width" required>
+                    </mat-form-field>
+                    
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Vreme kraja</mat-label>
+                        <input matInput type="datetime-local" name="vremeKraja" formControlName="vremeKraja" class="example-full-width" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Bodovi</mat-label>
+                        <input type="number" name="bodovi" formControlName="bodovi" matInput required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Tip evaluacije</mat-label>
+                        <mat-select formControlName="typeEvaluation" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let typeEvaluation of typeEvaluations" [value]="typeEvaluation">{{typeEvaluation.tipEvaluacije}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Ishod</mat-label>
+                        <mat-select formControlName="topic" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let topic of topics" [value]="topic">{{topic.opis}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/topictable/createedittopic']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Instrument evaluacije</mat-label>
+                        <mat-select formControlName="evaluationInstrument" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let evaluationInstrument of evaluationInstruments" [value]="evaluationInstrument">{{evaluationInstrument.tipTestiranja}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/evaluationinstrumenttable/createeditevaluationinstrument']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Predmet</mat-label>
+                        <mat-select formControlName="subjectRealization" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let subjectRealization of subjectRealizations" [value]="subjectRealization">{{subjectRealization.subject.naziv}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/subjectrealizationtable/createeditsubjectrealization']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <div>
+                        <button type="submit" class="btn btn-primary btn-block" *ngIf="formCreateEditEvaluationKnowledge.value.id == null" (click)="save();">Save evaluation knowledge</button>
+                        <button type="submit" class="btn btn-primary btn-block" *ngIf="formCreateEditEvaluationKnowledge.value.id != null" (click)="save();">Edit evaluation knowledge</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isFaild">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

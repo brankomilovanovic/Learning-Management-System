@@ -1,0 +1,112 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+  <header>
+    <nav>
+      <ol class="breadcrumb repo-breadcrumb">
+        <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+      </ol> 
+    </nav>
+
+      <div class="box">
+        <div>
+          <button mat-raised-button color="primary" (click)="addStudenOnTheYear()">Add new index to student</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" formControlName="searchStudentName" (keyup)="applyFilter()" placeholder="Student">
+            </div>
+
+            <div class="block" *ngIf="this.searchStudentName != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push"><button mat-raised-button color="warn" (click)="delete()" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table id="content" #content mat-table [dataSource]="dataSource" matSort>
+          
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let studenontheyear;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(studenontheyear) : null"  
+                                  [checked]="selection.isSelected(studenontheyear)" 
+                                  [aria-label]="checkboxLabel(studenontheyear)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container> 
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let studenontheyear">
+                  <td mat-cell> {{studenontheyear.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="indexNo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Index Number </th>
+                <ng-container *matCellDef="let studenontheyear">
+                  <td mat-cell> {{studenontheyear.indexNo}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="studentName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Student </th>
+                <ng-container *matCellDef="let studenontheyear">
+                  <td mat-cell> {{studenontheyear.student.user.name}} {{studenontheyear.student.user.surname}} </td>
+                </ng-container>
+              </ng-container>
+              
+              <ng-container matColumnDef="studentJmbg">
+                <th mat-header-cell *matHeaderCellDef> Student JMBG</th>
+                <td mat-cell *matCellDef="let studenontheyear">
+                  <span>{{studenontheyear.student.jmbg}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dateOfEntry">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Date of Entry </th>
+                <ng-container *matCellDef="let studenontheyear">
+                  <td mat-cell> {{studenontheyear.dateOfEntry | date:'yyyy-MM-dd'}} </td>
+                </ng-container>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell [hidden]="show" *matHeaderCellDef mat-sort-header> Actions </th>
+                <ng-container *matCellDef="let studenontheyear">
+                    <td mat-cell>
+                        <div class="example-button-row">
+                          <button mat-icon-button color="primary" (click)="selectForChange(studenontheyear);" title="Edit Object">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                        </div>
+                    </td>
+                </ng-container>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let studenontheyear; columns: displayedColumns;"
+                  (click)="selection.toggle(studenontheyear)"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of studentontheyear"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+    <!-- <button mat-raised-button color="primary" (click)="exportPDF()" style="margin-top: 20px; margin-left: 20px;">Export table to PDF</button> -->
+</div>

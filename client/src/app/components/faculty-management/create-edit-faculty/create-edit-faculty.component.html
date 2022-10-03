@@ -1,0 +1,99 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+          <nav style="clear:both;"> 
+            <ol class="breadcrumb repo-breadcrumb">
+              <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+              <li class="breadcrumb-item"><a href="/facultytable" [routerLink]="['/facultytable']" class="router-link-active">Faculty management</a></li>
+            </ol> 
+          </nav>
+
+            <h2 *ngIf="formCreateEditFaculty.value.id == null" style="text-align: center;">Add new faculty</h2>
+            <h2 *ngIf="formCreateEditFaculty.value.id != null" style="text-align: center;">Edit faculty (ID: {{formCreateEditFaculty.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditFaculty" novalidate>
+                    <div class="form-group">
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Name</mat-label>
+                        <input matInput type="text" name="name" formControlName="name" class="example-full-width" (change)="checkFacultyNameExist()" required>
+                    </mat-form-field>
+
+                      <form [formGroup]="formCreateEditAddress" novalidate>
+                        <table class="example-full-width" cellspacing="0">
+                          <tr>
+                            <td><mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>Country</mat-label>
+                                <mat-select required formControlName="country">
+                                  <mat-option *ngFor="let country of countrys" (click)="selectCountry(country)" [ngValue]="country" [value]="country">{{ country }} </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                          </td>
+                          <td>
+                            <mat-form-field class="example-full-width" appearance="outline">
+                              <mat-label>City</mat-label>
+                                <mat-select formControlName="city">
+                                  <mat-option *ngFor="let city of citys" [ngValue]="city" [value]="city">{{ city }} </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            </td>
+                              <td><mat-form-field class="example-full-width" appearance="outline">
+                                <mat-label>Street and number</mat-label>
+                                <input matInput type="text" name="streetAndNumber" formControlName="streetAndNumber">
+                              </mat-form-field>
+                            </td>
+                          </tr>
+                        </table>
+                      </form>
+
+                      <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Contact Details</mat-label>
+                        <input matInput type="number" name="contactDetails" formControlName="contactDetails" class="example-full-width" placeholder="Ex. 063-555-1234" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput name="description" formControlName="description" class="example-full-width"  rows="5" placeholder="Enter Description" required>
+                        </textarea>
+                    </mat-form-field>  
+
+                    <mat-form-field appearance="outline" style="width: 92%;"  *ngIf="role == 'ROLE_ADMINISTRATOR'">
+                        <mat-label>Deans</mat-label>
+                        <mat-select formControlName="dean" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let dean of deans;" [value]="dean">{{dean.user.name}} {{dean.user.surname}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" *ngIf="role == 'ROLE_ADMINISTRATOR'" [routerLink]="['/userstable/createedituser']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                      <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" style="width: 92%;" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+                      <mat-label>Universities</mat-label>
+                      <mat-select formControlName="university" [compareWith]="comparator" (selectionChange)="checkFacultyNameExist()" required>
+                          <mat-option *ngFor="let university of universitys;" [value]="university">{{university.name}}</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+                  <button type="button" *ngIf="role == 'ROLE_ADMINISTRATOR'" [routerLink]="['/universitytable/createedituniversity']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                    <mat-icon>add_box</mat-icon>
+                  </button>
+                </div>
+
+                  <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditFaculty.value.id == null">Add Faculty</button>
+                    <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditFaculty.value.id != null">Edit Faculty</button>
+                    <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                  </div>
+
+                  <div class="alert alert-warning" *ngIf="isFaild">
+                    Failed!<br />{{ errorMessage }}
+                  </div>
+
+                </form>
+            </div>
+        </div>
+    </header>
+</div>
+

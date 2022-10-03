@@ -1,0 +1,45 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/evaluationinstrumenttable" [routerLink]="['/evaluationinstrumenttable']" class="router-link-active">Evaluation instrument management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditEvaluationInstrument.value.id == null" style="text-align: center;">Add new evaluation knowledge</h2>
+            <h2 *ngIf="formCreateEditEvaluationInstrument.value.id != null" style="text-align: center;">Edit evaluation knowledge (ID: {{formCreateEditEvaluationInstrument.value.id}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreateEditEvaluationInstrument" novalidate>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Instrument evaluacije</mat-label>
+                        <input type="text" name="tipTestiranja" formControlName="tipTestiranja" (change)="checkEvaluationInstrumentOpisExist($event.target.value)" matInput required>
+                     </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>File</mat-label>
+                        <mat-select formControlName="file" [compareWith]="comparator" (selectionChange)="checkEvaluationInstrumentExistWithFile($event.source.value)" required>
+                            <mat-option *ngFor="let file of files" [value]="file">{{file.opis}} </mat-option>
+                        </mat-select> 
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/filetable/createeditfile']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <div>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditEvaluationInstrument.value.id == null" (click)="save();">Save evaluation instrument</button>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditEvaluationInstrument.value.id != null" (click)="save();">Edit evaluation instrument</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isFaild">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

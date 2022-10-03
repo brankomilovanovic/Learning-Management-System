@@ -1,0 +1,135 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div style="margin-top: 7px;">
+          <button mat-raised-button color="primary" (click)="addNewRank()" *ngIf="role == 'ROLE_ADMINISTRATOR'">Add new rank</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+                        
+            <div class="form-group has-search block" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control"  formControlName="searchProfessorName" (keyup)="applyFilter()" placeholder="Professor">
+            </div>
+            
+            <mat-form-field appearance="outline" style="margin-left: 8px; top: 2.8px;">
+              <mat-label>Scientific area</mat-label>
+              <mat-select formControlName="searchScientificArea" (selectionChange)="applyFilter()">
+                  <mat-option *ngFor="let scientificArea of scientificAreas" [value]="scientificArea.name">{{scientificArea.name}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="margin-left: 8px; top: 2.8px;">
+              <mat-label>Type rank</mat-label>
+              <mat-select formControlName="searchTypeRank" (selectionChange)="applyFilter()">
+                  <mat-option *ngFor="let typeRank of typeRanks" [value]="typeRank.name">{{typeRank.name}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="block" *ngIf="this.searchProfessorName != '' || this.searchScientificArea != '' || this.searchTypeRank != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push" style="margin-top: 7px;"><button mat-raised-button color="warn" (click)="delete()" *ngIf="role == 'ROLE_ADMINISTRATOR'" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+          
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let rank;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(rank) : null"  
+                                  [checked]="selection.isSelected(rank)" 
+                                  [aria-label]="checkboxLabel(rank)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container> 
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let rank">
+                  <td mat-cell> {{rank.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="electionDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Election date </th>
+                <ng-container *matCellDef="let rank">
+                  <td mat-cell> {{rank.electionDate | date:'yyyy-MM-dd'}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="terminationDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Termination date </th>
+                <ng-container *matCellDef="let rank">
+
+                  <td mat-cell> {{rank.terminationDate | date:'yyyy-MM-dd'}} {{rank.terminationDate ? '' : 'Undefined'}}  </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="typeRanks">
+                <th mat-header-cell *matHeaderCellDef> Type rank </th>
+                <td mat-cell *matCellDef="let rank">
+                  <span>{{rank.typeRanks.name}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="scientificArea">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Scientific area </th>
+                <td mat-cell *matCellDef="let rank">
+                  <span>{{rank.scientificArea.name}}</span>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="professor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Professor </th>
+                <td mat-cell *matCellDef="let rank">
+                  <span>{{rank.professor.user.name}} {{rank.professor.user.surname}}</span>
+                </td>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+                <ng-container *matCellDef="let rank">
+                    <td mat-cell>
+                        <div class="example-button-row">
+                          <button mat-icon-button color="primary" (click)="selectForChange(rank);">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                        </div>
+                    </td>
+                </ng-container>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let rank; columns: displayedColumns;"
+                  (click)="selection.toggle(rank)"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of rank"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>

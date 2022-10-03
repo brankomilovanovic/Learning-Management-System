@@ -1,0 +1,229 @@
+<div class="container">
+    <header>
+
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li *ngIf="role == 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+          <li *ngIf="role != 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/professor" [routerLink]="['/professor']" class="router-link-active">Professor board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div style="margin-top: 5px;" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+          <button mat-raised-button color="primary" (click)="addNewUser()">Add new user</button>
+        </div>
+        <div>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Search</mat-label>
+            <input type="text" matInput placeholder="Ex. Petar Petrovic" [formControl]="myControl" [matAutocomplete]="auto">
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayUser">
+              <mat-option *ngFor="let user of filteredOptions | async" [value]="user.name + ' ' + user.surname">
+                {{user.name}} {{user.surname}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" style="margin-left: 7px;" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+            <mat-label>Role</mat-label>
+            <mat-select (selectionChange)="selectedRole($event.source.value)" [(ngModel)]="searchRoleID">
+                <mat-option *ngFor="let role of roles" [value]="role.id">{{role.name}} </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div class="block" *ngIf="(this.searchName != '' || this.searchSurname != '' || this.searchRoleID != '' && role == 'ROLE_ADMINISTRATOR') ||
+                                    (this.searchName != '' || this.searchSurname != '' && role != 'ROLE_ADMINISTRATOR')">
+            <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+          </div>
+
+        </div>
+          <div class="push" style="margin-top: 5px;"><button mat-raised-button color="warn" (click)="delete()" *ngIf="role == 'ROLE_ADMINISTRATOR'" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+  
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <!-- Checkbox Column -->  
+          <ng-container matColumnDef="select">  
+            <th mat-header-cell *matHeaderCellDef>  
+                <mat-checkbox (change)="$event ? masterToggle() : null"  
+                              [checked]="selection.hasValue() && isAllSelected()"  
+                              [indeterminate]="selection.hasValue() && !isAllSelected()"
+                              color="primary"></mat-checkbox>  
+            </th>  
+            <td mat-cell *matCellDef="let user;">  
+                <mat-checkbox (click)="$event.stopPropagation()"
+                              (change)="$event ? selection.toggle(user) : null"  
+                              [checked]="selection.isSelected(user)" 
+                              [aria-label]="checkboxLabel(user)"
+                              color="primary"></mat-checkbox>  
+            </td>  
+          </ng-container>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let user"> {{user.id}} </td>
+          </ng-container> 
+      
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let user"> {{user.name}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="surname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Surname </th>
+            <td mat-cell *matCellDef="let user"> {{user.surname}} </td>
+          </ng-container>
+      
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+            <td mat-cell *matCellDef="let user"> {{user.username}} </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> E-Mail </th>
+            <td mat-cell *matCellDef="let user"> {{user.email}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="roles">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Roles </th>
+            <ng-container *matCellDef="let user">
+              <td mat-cell>
+                <ng-container *ngFor="let role of user.roles; let isLast=last">{{role.name}}{{isLast ? '' : ', '}}</ng-container>
+              </td>
+            </ng-container>
+          </ng-container>
+  
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef> Actions </th>
+            <td mat-cell *matCellDef="let user" >
+              <div class="example-button-row">
+                <div class="box">
+                  <ng-container>
+                    <button mat-icon-button color="primary" (click)="selectForChange(user)" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </ng-container>
+                  <ng-container *ngFor="let role of user.roles;">
+                    <button *ngIf="role.name == 'ROLE_STUDENT'" mat-icon-button color="primary" (click)="selectStudentDetails(user)">
+                      <mat-icon>dehaze</mat-icon>
+                    </button>
+                  </ng-container>
+                </div>
+              </div>
+            </td>
+          </ng-container>
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let user; columns: displayedColumns;"></tr>
+        </table>
+      
+        <mat-paginator [length]="total" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="page($event)" showFirstLastButtons aria-label="Select page of user"></mat-paginator>
+      </div>
+
+      <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+
+    <!-- JUST FOR TEST -->
+    <!-- <div *ngIf="role == 'ROLE_ADMINISTRATOR'">
+      <div>
+        <span>JUST FOR TEST</span>
+      </div>
+      <div class="example-button-row" class="block">
+        <button mat-raised-button color="primary" (click)="generate300Users()">GENERATER 300 USERS</button>
+      </div>
+    </div>
+  </div> -->
+
+  
+  <br>
+  <!-- <div *ngIf="kliknut">
+    <p>Datum upisa: {{student.dateOfEntry | date:'yyyy-MM-dd'}}</p>
+  </div> -->
+
+  <div class="wrapper" *ngIf="kliknut">
+    <div class="table-responsive" style="width: 60%;">    
+        <mat-accordion class="example-headers-align">
+            <mat-expansion-panel hideToggle>
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                   Details about student history
+                </mat-panel-title>
+                <mat-panel-description>
+                    Click to see more
+                    <mat-icon>dehaze</mat-icon>
+                </mat-panel-description>
+              </mat-expansion-panel-header>
+                <table class="table table-striped table-compact table-bordered">
+                    <tbody>
+                         <tr>
+                            <td>Datum upisa</td>
+                            <td>{{student?.dateOfEntry | date:'yyyy-MM-dd'}}</td>
+                        </tr>
+                        <tr>
+                            <td>Broj indeksa</td>
+                            <td>{{student?.indexNo}}</td>
+                        </tr>
+                        <tr>
+                            <td>Adresa</td>
+                            <td>{{city}}, {{country}}, {{steet}}</td>
+                        </tr>
+                        <tr>
+                            <td>Datum rodjenja</td>
+                            <td>{{student?.student?.dateOfBirth}}</td>
+                        </tr>
+                        <tr>
+                            <td>JMBG</td>
+                            <td>{{student?.student?.jmbg}}</td>
+                        </tr>
+                        <tr>
+                          <td>Broj telefona</td>
+                          <td>{{student?.student?.phoneNumber}}</td>
+                        </tr>
+                        <tr>
+                          <td>Prosecna ocena za sve predmete</td>
+                          <td>{{bodovi}}</td>
+                        </tr>
+                        <div *ngFor="let x of test">
+                        <b><p style="margin-top:10px ; padding-left: 10px;">Polaganja: {{x.subject.naziv}}</p></b>
+                        <tr>
+                          <td>Obavezan</td>
+                          <td>
+                              <span *ngIf="x.subject?.obavezan == true">Da</span>
+                              <span *ngIf="x.subject?.obavezan == false">Ne</span>
+                          </td>
+                        </tr>
+                        
+                        <div style="margin-top:10px ; padding-left: 10px;"*ngFor="let x of test"></div>
+                          <tr>  
+                            <td>Ispit</td>
+                            <td>{{x?.ispit}}</td>
+                          </tr>
+                          <tr>  
+                            <td>Ocena</td>
+                            <td>{{x?.ocena}}</td>
+                          </tr>
+                      </div>
+                      <div *ngFor="let x of upisi">
+                        <b><p style="margin-top:10px ; padding-left: 10px;">Upisi</p></b>
+                        <tr>
+                          <td>Studijski programi</td>
+                          <td>{{x.studyProgrammes.name}}</td>
+                        </tr>
+                        <tr>
+                          <td>Godina studija</td>
+                          <td *ngFor="let y of x.year">{{ y.year| date:'yyyy-MM-dd'}}</td>
+                        </tr>
+                      </div>
+                    </tbody>
+                </table>                                    
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div> 
+
+  <div>
+<br>
+<br>

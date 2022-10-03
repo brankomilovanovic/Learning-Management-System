@@ -1,0 +1,68 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/teachingmaterialtable" [routerLink]="['/teachingmaterialtable']" class="router-link-active">Teaching material management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEdit.value.id == null" style="text-align: center;">Add new teaching material</h2>
+            <h2 *ngIf="formCreateEdit.value.id != null" style="text-align: center;">Edit teaching material (ID: {{formCreateEdit.value.id}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreateEdit" novalidate>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Naziv</mat-label>
+                        <input type="text" name="naziv" formControlName="naziv" (change)="checkExistsNaziv($event.target.value)" required matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Godina izdavanja</mat-label>
+                        <input matInput type="date" name="godinaIzdavanja" required formControlName="godinaIzdavanja" class="example-full-width" required>
+                    </mat-form-field>
+
+                    <div formArrayName="autori">
+                        <div *ngFor="let autor of autori().controls; index as i" class="box">
+                            <mat-form-field appearance="outline" style="width: 86%;">
+                                <mat-label>Autor</mat-label>
+                                <input type="text" name="autori" [formControlName]="i" matInput required>
+                                <mat-hint align="end" [hidden]="!findDuplicateAuthor(autor.value) && i >= 0">Duplicate author</mat-hint>
+                            </mat-form-field>
+                            <span class="push" style="margin-left: 5px; margin-top: 25px;">
+                                <button type="button" mat-icon-button color="primary" (click)="addAuthorField()" title="Add new author">
+                                    <mat-icon>person_add</mat-icon>
+                                </button>
+                                <button type="button" mat-icon-button color="warn" (click)="deleteAuthorField(i)" title="Delete author">
+                                    <mat-icon>delete_forever</mat-icon>
+                                </button>
+                            </span>
+                        </div>
+                    </div> 
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>File</mat-label>
+                        <mat-select formControlName="file" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let file of files;" [value]="file">{{file.opis}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/filetable/createeditfile']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon class="addNewObject">add_box</mat-icon>
+                    </button>
+
+                    <div>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEdit.value.id == null" (click)="save();">Save teaching material</button>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEdit.value.id != null" (click)="save();">Edit teaching material</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isFailed">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

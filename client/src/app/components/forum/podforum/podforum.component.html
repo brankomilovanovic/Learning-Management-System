@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div class="container my-3">
+      <nav class="breadcrumb">
+        <a href="forum" routerLink="/forum" class="breadcrumb-item">Forum</a>
+        <span class="breadcrumb-item active"> {{ podforum?.naziv }} </span>
+      </nav>
+
+      <div class="row">
+        <div class="col-12">
+          <h2 class="h4 text-white bg-info mb-0 p-4 rounded-top"><span> {{ podforum?.naziv }} </span>
+            <ng-container *ngIf="role != null">
+              <button style="float: right;" type="button" (click)="addNotification(podforum)" *ngIf="pratiOvajPodforum == false" mat-icon-button title="Add notification for this topic">
+                <mat-icon>notifications</mat-icon>
+              </button>
+              <button style="float: right;" type="button" (click)="removeNotification(podforum)" *ngIf="pratiOvajPodforum == true" mat-icon-button title="Remove notification for this topic">
+                <mat-icon>notifications_active</mat-icon>
+              </button>
+            </ng-container>
+          </h2>
+
+          <table class="table table-striped table-bordered table-responsive-lg">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col" class="topic-col">Topic</th>
+                <th scope="col" class="created-col">Created</th>
+                <th scope="col">Statistics</th>
+                <th scope="col" class="last-post-col">Last post</th>
+              </tr>
+            </thead>
+            <p *ngIf="this.totalTema == 0" style="font-weight: bold; margin-left: 10px; margin-top: 10px;">Doesn't exist topic!</p>
+            <tbody *ngFor="let tema of obs | async">
+              <tr>
+                <td>
+                <h3 class="h6"><a href="forum/podforum/tema" routerLink="/forum/podforum/tema" [queryParams]="{ id: tema.id }"> {{ tema.naziv }} </a></h3> 
+                </td>
+                <td>
+                  <div>by <span style="font-weight: bold;"> {{ tema.prvaObjava?.autor.user.name }} {{ tema.prvaObjava?.autor.user.surname }} </span></div>
+                  <div >{{ tema.prvaObjava?.vremePostavljanja | date:'d MMM yyyy, HH:mm' }}</div>
+                </td>
+                <td>
+                  <div> {{ tema?.brojObjava }} replies</div>
+                  <div> {{ tema?.pregleda }} views</div>
+                </td>
+                <td>
+                  <div>by <span style="font-weight: bold;"> {{ tema.zadnjaObjava?.autor.user.name }} {{ tema.zadnjaObjava?.autor.user.surname }} </span></div>
+                  <div>{{ tema.zadnjaObjava?.vremePostavljanja | date:'d MMM yyyy, HH:mm' }}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <mat-paginator [pageSizeOptions]="[10]"></mat-paginator>
+
+        </div>
+      </div>
+      <a href="forum/podforum/tema/createedittema" routerLink="/forum/podforum/tema/createedittema" [queryParams]="{ podforum_id: podforum?.id }" *ngIf="role != null" class="btn btn-lg btn-primary">New topic</a>
+    </div>
+
+    <footer class="small text-white">
+        <div class="container py-4" style="background-color: #343a40!important;">
+          <ul class="list-inline mb-0 text-center">
+            <li class="list-inline-item">&copy; 2022</li>
+            <li class="list-inline-item">All rights reserved.</li>
+            <li class="list-inline-item">Terms of use and privacy policy.</li>
+          </ul>
+        </div>
+      </footer>
+
+  </body>
+</html>

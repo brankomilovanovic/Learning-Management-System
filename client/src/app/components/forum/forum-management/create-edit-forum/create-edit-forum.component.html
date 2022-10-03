@@ -1,0 +1,40 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/forumtable" [routerLink]="['/forumtable']" class="router-link-active">Forum management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreatePodforum.value.id == null" style="text-align: center;">Add new podforum</h2>
+            <h2 *ngIf="formCreatePodforum.value.id != null" style="text-align: center;">Edit podforum (ID: {{formCreatePodforum.value.id}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreatePodforum" novalidate>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Naziv</mat-label>
+                        <input type="text" name="naziv" formControlName="naziv" (change)="checkName()" required matInput>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Opis</mat-label>
+                        <textarea matInput type="text" name="opis" formControlName="opis" rows="3" required maxlength="100" ></textarea>
+                    </mat-form-field>
+
+                    <div>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreatePodforum.value.id == null" (click)="save();">Save podforum</button>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreatePodforum.value.id != null" (click)="save();">Edit podforum</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isFailed">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

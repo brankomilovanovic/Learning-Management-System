@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div class="container my-3">
+      <nav class="breadcrumb">
+        <a href="forum" routerLink="/forum" class="breadcrumb-item">Forum</a>
+        <a href="forum/podforum" routerLink="/forum/podforum" [queryParams]="{ id: tema?.podforum?.id }" class="breadcrumb-item"> {{ tema?.podforum?.naziv }} </a>
+        <span class="breadcrumb-item active"> {{ tema?.naziv }} </span>
+      </nav>
+      <div class="row">
+        <div class="col-12">
+          <h2 class="h4 text-white bg-info mb-0 p-4 rounded-top"> <span>{{ tema?.naziv }} </span> 
+            <ng-container *ngIf="role != null">
+              <button style="float: right;" type="button" (click)="deleteTema(tema.id)" *ngIf="role == 'ROLE_ADMINISTRATOR' || tema?.autor.user.id == korisnikNaForumu.user?.id" mat-icon-button title="Delete topic">
+                <mat-icon>delete_forever</mat-icon>
+              </button>
+              <button style="float: right;" type="button" (click)="addNotification(tema)" *ngIf="pratiOvuTemu == false" mat-icon-button title="Add notification for this topic">
+                <mat-icon>notifications</mat-icon>
+              </button>
+              <button style="float: right;" type="button" (click)="removeNotification(tema)" *ngIf="pratiOvuTemu == true" mat-icon-button title="Remove notification for this topic">
+                <mat-icon>notifications_active</mat-icon>
+              </button>
+            </ng-container>
+
+          </h2>
+          <table class="table table-striped table-bordered table-responsive-lg" style="margin:0px; border:0px; vertical-align: top;">
+            <thead class="thead-light">
+              <tr>
+                <th style="width: 200px;" scope="col">Author</th>
+                <th scope="col">Message</th>
+              </tr>
+            </thead>
+          </table>
+
+          <table class="table table-striped table-bordered table-responsive-lg" *ngFor="let objava of obs | async">
+            <tbody>
+              <tr>
+                <td class="author-col" style="width: 200px; max-width: 200px;">
+                  <div>Posted by <div class="font-weight-bold"> {{ objava.autor.user.name }} {{ objava.autor.user.surname }} </div></div>
+                  <div> {{ objava.vremePostavljanja | date:'d MMM yyyy, HH:mm' }} </div>
+                  <br>
+                  <br>
+                  <div><span class="font-weight-bold">Joined:</span><br> {{ objava.autor.vremePrijavljivanja | date:'d MMM yyyy, HH:mm' }} </div>
+                  <div><span class="font-weight-bold">Posts:</span> {{ objava.autor.objave }} </div>
+                  <div><span class="font-weight-bold">Role: </span>
+                  <div *ngFor="let role of objava.tema.autor.user.roles">
+                    <p *ngIf="role.name == 'ROLE_ADMINISTRATOR'">Administrator</p>
+                    <p *ngIf="role.name == 'ROLE_PROFESSOR'">Moderator</p>
+                    <p *ngIf="role.name == 'ROLE_STUDENT'">Posetilac</p>
+                  </div>
+                  </div>
+                </td>
+                <td>
+                  <p> {{ objava.sadrzaj }} </p>
+                </td>
+              </tr>
+              <span *ngIf="objava.prilozi.length != 0" style="font-weight: bold; margin-left: 13px;">Prilozi:</span><br>
+              <span style="margin-left: 13px;">
+                <ng-container *ngFor="let prilog of objava.prilozi; let isLast=last">
+                  <a href="prilog.url">{{prilog.opis}}{{isLast ? '' : ', '}}</a>
+                </ng-container>
+              </span>
+              <ng-container *ngIf="role != null">
+              <td colspan="2" style="border: 0px;" *ngIf="objava.autor.id == korisnikNaForumu?.id || role == 'ROLE_ADMINISTRATOR'">
+                <div class="box">
+                  <div class="push">
+                    <button type="submit" (click)="edit(objava)" mat-stroked-button>Edit</button>
+                    <button type="button" style="margin-left: 5px;" mat-stroked-button color="warn" (click)="delete(objava.id, tema.id)">Delete</button>
+                  </div>
+                </div>
+              </td>
+              </ng-container>
+            </tbody>
+          </table>
+          <mat-paginator [pageSizeOptions]="[5]"></mat-paginator>
+          
+        </div>
+      </div>
+
+      <form class="mb-3" [formGroup]="formCreateEditObjava" *ngIf="role != null" novalidate>
+
+        <div class="form-group">
+          <label for="comment">Reply to this post:</label>
+          <textarea class="form-control" id="comment" name="sadrzaj" formControlName="sadrzaj" rows="7" placeholder="Write your comment here." required></textarea>
+        </div>
+
+        <div formArrayName="prilozi">
+          <span style="font-weight: bold;">Prilozi:</span>
+          <div *ngFor="let prilog of prilozi.controls; index as i" class="box">
+            <div class="lesson-form-row" [formGroup]="prilog">
+            <table class="example-full-width" cellspacing="0">
+              <tr>
+                <td>
+                  <div class="form-group" class="example-full-width">
+                    <input type="text" class="form-control" name="naziv" formControlName="opis" placeholder="Opis" required>
+                  </div>
+              </td>
+              <td>
+                <div class="form-group" class="example-full-width">
+                  <input type="text" class="form-control" name="url" formControlName="url" placeholder="Url" required>
+                </div>
+                </td>
+              </tr>
+            </table>
+          </div>
+              <span class="push" style="margin-left: 5px; ">
+                  <button type="submit" mat-icon-button color="primary" (click)="addField()" title="Add new file">
+                      <mat-icon>add</mat-icon>
+                  </button>
+                  <button type="button" mat-icon-button color="warn" *ngIf="formCreateEditObjava.value.prilozi.length > 1" (click)="deleteField(i, prilog.value.id)" title="Delete file">
+                      <mat-icon>delete_forever</mat-icon>
+                  </button>
+              </span>
+          </div>          
+        </div> 
+
+        <div class="box" style="margin-top: 10px;">
+            <div>
+              <button type="submit" (click)="save()" class="btn btn-primary">Replay</button>
+              <button type="button" (click)="reset()" 
+              style="margin-left: 5px;" class="btn btn-danger">Reset</button>
+            </div>
+            <div class="push">
+              <button type="button" (click)="cancel()" style="margin-left: 5px;" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+      </form>
+
+    </div>
+
+    <footer class="small text-white">
+        <div class="container py-4" style="background-color: #343a40!important;">
+          <ul class="list-inline mb-0 text-center">
+            <li class="list-inline-item">&copy; 2022</li>
+            <li class="list-inline-item">All rights reserved.</li>
+            <li class="list-inline-item">Terms of use and privacy policy.</li>
+          </ul>
+        </div>
+      </footer>
+  </body>
+</html>

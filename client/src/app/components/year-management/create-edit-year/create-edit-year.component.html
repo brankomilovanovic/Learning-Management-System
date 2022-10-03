@@ -1,0 +1,69 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/yeartable" [routerLink]="['/yeartable']" class="router-link-active">Year management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditYear.value.id == null" style="text-align: center;">Add new year</h2>
+            <h2 *ngIf="formCreateEditYear.value.id != null" style="text-align: center;">Edit year (ID: {{formCreateEditYear.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditYear" novalidate>
+                    <div class="form-group">
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Year</mat-label>
+                        <input matInput type="date" name="year" formControlName="year" (change)="checkStudyProgrammeAndDate()" class="example-full-width" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Active</mat-label>
+                        <mat-select formControlName="active" required>
+                            <mat-option [value]="true"> Yes </mat-option>
+                            <mat-option [value]="false"> No </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Subjects</mat-label>
+                        <mat-select formControlName="subjects" [compareWith]="comparator" multiple required>
+                            <mat-option *ngFor="let s of sub" [value]="s">{{s.naziv}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/subjecttable/createeditsubject']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Study programme</mat-label>
+                        <mat-select formControlName="studyProgramme" [compareWith]="comparator" (selectionChange)="checkStudyProgrammeAndDate();" required>
+                            <mat-option *ngFor="let program of studyP" [value]="program">{{program.name}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/studyprogrammetable/createeditstudyprogramme']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+                
+                    </div>
+
+                    <div class="form-group">
+                    <button class="btn btn-primary btn-block" type="submit" (click)="saveYear()" *ngIf="formCreateEditYear.value.id == null">Add new year</button>
+                    <button class="btn btn-primary btn-block" type="submit" (click)="saveYear()" *ngIf="formCreateEditYear.value.id != null">Edit year</button>
+                    <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

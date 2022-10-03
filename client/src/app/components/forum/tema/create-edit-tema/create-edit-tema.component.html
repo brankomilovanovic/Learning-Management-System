@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+    <div class="container my-3">
+      <nav class="breadcrumb">
+        <a href="forum" routerLink="/forum" class="breadcrumb-item">Forum</a>
+        <a href="forum/podforum" routerLink="/forum/podforum" [queryParams]="{ id: podforum?.id }" class="breadcrumb-item"> {{ podforum?.naziv }} </a>
+        <span class="breadcrumb-item active" *ngIf="formCreateEditTema.value.id == null">Create topic</span>
+        <span class="breadcrumb-item active" *ngIf="formCreateEditTema.value.id != null">Edit topic</span>
+      </nav>
+      <div class="row">
+        <div class="col-12">
+          <h2 class="h4 text-white bg-info mb-3 p-4 rounded" *ngIf="formCreateEditTema.value.id == null">Create new topic</h2>
+          <h2 class="h4 text-white bg-info mb-3 p-4 rounded" *ngIf="formCreateEditTema.value.id != null">Edit topic</h2>
+
+          <form class="mb-3" [formGroup]="formCreateEditTema" novalidate>
+            <div class="form-group">
+              <label for="topic">Topic:</label>
+              <input type="text" class="form-control" name="naziv" formControlName="naziv" placeholder="Give your topic a title." required>
+            </div>
+          </form>
+
+          <form class="mb-3" [formGroup]="formCreateEditObjava" novalidate>
+            <div class="form-group">
+              <label for="comment">Comment:</label>
+              <textarea class="form-control" id="comment" name="sadrzaj" formControlName="sadrzaj" rows="10" placeholder="Write your comment here." required></textarea>
+            </div>
+
+            <div formArrayName="prilozi">
+              <span style="font-weight: bold;">Prilozi:</span>
+              <div *ngFor="let prilog of prilozi.controls; index as i" class="box">
+                <div class="lesson-form-row" [formGroup]="prilog">
+                <table class="example-full-width" cellspacing="0">
+                  <tr>
+                    <td>
+                      <div class="form-group" class="example-full-width">
+                        <input type="text" class="form-control" name="naziv" formControlName="opis" placeholder="Opis" required>
+                      </div>
+                  </td>
+                  <td>
+                    <div class="form-group" class="example-full-width">
+                      <input type="text" class="form-control" name="url" formControlName="url" placeholder="Url" required>
+                    </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+                  <span class="push" style="margin-left: 5px;">
+                      <button type="submit" mat-icon-button color="primary" (click)="addField()" title="Add new file">
+                          <mat-icon>add</mat-icon>
+                      </button>
+                      <button type="button" mat-icon-button color="warn" *ngIf="formCreateEditObjava.value.prilozi.length > 1" (click)="deleteField(i)" title="Delete file">
+                          <mat-icon>delete_forever</mat-icon>
+                      </button>
+                  </span>
+              </div>          
+            </div> 
+          </form>
+
+          <div class="box">
+            <div>
+              <button type="submit" (click)="save()" class="btn btn-primary">Create topic</button>
+              <button type="button" style="margin-left: 5px;" (click)="formCreateEditTema.get('naziv').setValue(null); formCreateEditObjava.get('sadrzaj').setValue(null);" class="btn btn-danger">Reset</button>
+            </div>
+            <div class="push">
+              <button type="button" style="margin-left: 5px;" (click)="cancel()" class="btn btn-danger">Cancel</button>
+            </div>
+        </div>
+
+        </div>
+      </div>
+    </div> 
+  
+    <footer class="small bg-dark text-white">
+      <div class="container py-4">
+        <ul class="list-inline mb-0 text-center">
+          <li class="list-inline-item">&copy; 2020</li>
+          <li class="list-inline-item">All rights reserved.</li>
+          <li class="list-inline-item"><a href="#">Terms of use and privacy policy</a>.</li>
+        </ul>
+      </div>
+    </footer>
+
+  </body>
+</html>

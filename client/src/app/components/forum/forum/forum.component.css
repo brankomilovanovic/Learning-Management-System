@@ -1,0 +1,8 @@
+.forum-col {
+    min-width: 16em;
+}
+.last-post-col {
+    min-width: 12em;
+    width: 13em;
+    max-width: 14em;
+}

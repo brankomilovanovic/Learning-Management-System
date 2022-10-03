@@ -1,0 +1,116 @@
+<div class="container">
+	
+	
+	
+  <header class="jumbotron">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+
+
+
+<div class="container">
+<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+    <div class="col">
+		 <div class="card radius-10 border-start border-0 border-3 border-info">
+			<a [routerLink]="['/userstable']">
+			<div class="card-body">
+				<div class="d-flex align-items-center">
+					<div> 
+						<p class="mb-0 text-secondary">Total Users</p>
+						<h4 class="my-1 text-info">{{ this.countUsers }}</h4>
+					</div>
+					<div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto"><i class="fa fa-users"></i>
+					</div>
+				</div>
+			</div>
+			</a>
+		 </div>
+	   </div>
+	   <div class="col">
+		<div class="card radius-10 border-start border-0 border-3 border-danger">
+			<a [routerLink]="['/userstable']">
+		    <div class="card-body">
+			   <div class="d-flex align-items-center">
+				   <div>
+					   <p class="mb-0 text-secondary">Professors</p>
+					   <h4 class="my-1 text-danger">{{ this.countProfessors }}</h4>
+				   </div>
+				   <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto"><i class="fa fa-user-o"></i>
+				   </div>
+			   </div>
+		    </div>
+			</a>
+		</div>
+	  </div>
+	  <div class="col">
+		<div class="card radius-10 border-start border-0 border-3 border-success">
+		    <a [routerLink]="['/userstable']">
+		    <div class="card-body">
+			   <div class="d-flex align-items-center">
+				   <div>
+					   <p class="mb-0 text-secondary">Students</p>
+					   <h4 class="my-1 text-success">{{ this.countStudents }}</h4>
+				   </div>
+				   <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class="fa fa-graduation-cap"></i>
+				   </div>
+			   </div>
+		    </div>
+			</a>
+		</div>
+	  </div>
+	  <div class="col">
+		<div class="card radius-10 border-start border-0 border-3 border-warning">
+			<a [routerLink]="['/userstable']">
+		   	<div class="card-body">
+			   <div class="d-flex align-items-center">
+				   <div>
+					   <p class="mb-0 text-secondary">Administrators</p>
+					   <h4 class="my-1 text-warning">{{ this.countAdministrators }}</h4>
+				   </div>
+				   <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto"><i class="fa fa-vcard"></i>
+				   </div>
+			   </div>
+		   	</div>
+			</a>
+		</div>
+	  </div> 
+	</div>
+
+	<div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+		<div class="col">
+			<div class="card radius-10 border-start border-0 border-3 border-success">
+				<a [routerLink]="['/universitytable']">
+				<div class="card-body">
+				   <div class="d-flex align-items-center">
+					   <div>
+						   <p class="mb-0 text-secondary">University</p>
+						   <h4 class="my-1 text-success">{{ this.countUniversities }}</h4>
+					   </div>
+					   <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto"><i class="fa fa-university"></i>
+					   </div>
+				   </div>
+				</div>
+				</a>
+			</div>
+		  </div>
+		<div class="col">
+			<div class="card radius-10 border-start border-0 border-3 border-warning">
+				<a [routerLink]="['/facultytable']">
+				   <div class="card-body">
+				   <div class="d-flex align-items-center">
+					   <div>
+						   <p class="mb-0 text-secondary">Faculty</p>
+						   <h4 class="my-1 text-warning">{{ this.countFaculty }}</h4>
+					   </div>
+					   <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto"><i class="fa fa-book"></i>
+					   </div>
+				   </div>
+				   </div>
+				</a>
+			</div>
+		</div> 
+	</div>
+
+</div>
+  </header>
+</div>

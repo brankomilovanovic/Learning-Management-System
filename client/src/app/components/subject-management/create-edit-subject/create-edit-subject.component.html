@@ -1,0 +1,104 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/subjecttable" [routerLink]="['/subjecttable']" class="router-link-active">Subject management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditSubject.value.id == null" style="text-align: center;">Add new subject</h2>
+            <h2 *ngIf="formCreateEditSubject.value.id != null" style="text-align: center;">Edit subject (ID: {{formCreateEditSubject.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditSubject" novalidate>
+                    <div class="form-group">
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Naziv</mat-label>
+                            <input matInput type="text" name="naziv" formControlName="naziv" class="example-full-width" (input)="checkSubjectNaziv()" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>ESPB</mat-label>
+                            <input matInput type="number" name="espb" formControlName="espb" class="example-full-width" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Obavezan</mat-label>
+                            <mat-select formControlName="obavezan" required>
+                                <mat-option [value]="true"> DA </mat-option>
+                                <mat-option [value]="false"> NE </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <table class="example-full-width" cellspacing="0">
+                            <tr>
+                              <td>
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Broj predavanja</mat-label>
+                                    <input matInput type="number" name="brojPredavanja" formControlName="brojPredavanja" class="example-full-width" required>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Broj vezbi</mat-label>
+                                    <input matInput type="number" name="brojVezbi" formControlName="brojVezbi" class="example-full-width" required>
+                                </mat-form-field>
+                              </td>
+                            </tr>
+                        </table>
+
+                        <table class="example-full-width" cellspacing="0">
+                            <tr>
+                              <td>                       
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Drugi oblici nastave</mat-label>
+                                    <input matInput type="number" name="drugiObliciNastave" formControlName="drugiObliciNastave" class="example-full-width" required>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Ostali casovi</mat-label>
+                                    <input matInput type="number" name="ostaliCasovi" formControlName="ostaliCasovi" class="example-full-width" required>
+                                </mat-form-field>
+                              </td>
+                              <td>
+                                <mat-form-field appearance="outline" class="example-full-width">
+                                    <mat-label>Istrazivacki rad</mat-label>
+                                    <input matInput type="number" name="istrazivackiRad" formControlName="istrazivackiRad" class="example-full-width" required>
+                                </mat-form-field>
+                              </td>
+                            </tr>
+                        </table>
+
+                        <mat-form-field appearance="outline" style="width: 92%;">
+                            <mat-label>Topic</mat-label>
+                            <mat-select formControlName="topic" [compareWith]="compare" multiple>
+                                <mat-option *ngFor="let topic of topics" [value]="topic">{{topic.opis}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button type="button" [routerLink]="['/topictable/createedittopic']"  style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditSubject.value.id == null" [disabled]="this.isCreateFailed == true">Add new subject</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditSubject.value.id != null" [disabled]="this.isCreateFailed == true">Edit subject</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isCreateFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

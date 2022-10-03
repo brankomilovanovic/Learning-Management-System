@@ -1,0 +1,153 @@
+table {
+  width: 100%;
+}
+    
+.mat-cell {
+  padding: 12px 12px 12px 0;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-header-cell{
+  width: 5px;
+}
+
+.mat-raised-button {
+  margin: 0px 8px 0px 0px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.block {
+  display: inline-block;
+}
+
+.box {
+  display: flex;
+}
+
+.push {
+  margin-left: auto;
+}
+
+.mat-row:hover {
+  background-color: rgb(206, 203, 203);
+}
+
+/* Search input */
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.cross {
+  margin-left: 8px;
+  font-size: 25px;
+  color:#000;
+  cursor: pointer;
+}
+
+::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.59em 0px !important; }
+::ng-deep .mat-form-field-label-wrapper { top: -1.2em; }
+
+::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+    transform: translateY(-1.1em) scale(.75);
+    width: 133.33333%;
+}
+
+.make-gold {
+  background-color: rgb(231, 229, 229);
+}
+
+table {
+  width: 100%;
+}
+
+.row {
+  width: 100%;
+  margin: 0 auto;
+} 
+
+.wrapper {
+  margin-top: 15px;
+  display: flex;
+  box-sizing: border-box;
+}
+
+.wrapper > div {
+    margin: 0 16px;
+}
+
+body {
+  margin: 0 auto;
+  
+}
+
+.cross {
+  margin-left: 7px;
+  font-size: 20px;
+  color:#000;
+  cursor: pointer;
+}
+
+/* Search input */
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 1.775rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.block {
+  display: inline-block;
+}
+
+.box {
+  display: flex;
+}
+
+.mat-row:hover {
+  background-color: rgb(206, 203, 203);
+}
+
+.mat-expansion-panel {
+  border-style: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
+
+.example-container {
+  height: 335px;
+  overflow: auto;
+}

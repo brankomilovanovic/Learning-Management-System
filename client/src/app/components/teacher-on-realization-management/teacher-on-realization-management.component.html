@@ -1,0 +1,137 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div style="margin-top: 7px;">
+          <button mat-raised-button color="primary" (click)="addNew()">Add new teacher on realization</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block" style="margin-left: 8px;">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" formControlName="searchProfesor" (keyup)="applyFilter()" placeholder="Professor">
+            </div>
+
+            <mat-form-field appearance="outline" style="top: 2.8px;">
+              <mat-label>Tip nastave</mat-label>
+              <mat-select formControlName="searchTypeOfTeaching" (selectionChange)="applyFilter()">
+                  <mat-option *ngFor="let typeOfTeaching of typeOfTeachingAll" [value]="typeOfTeaching.naziv">{{typeOfTeaching.naziv}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="block" *ngIf="this.searchTypeOfTeaching != '' || this.searchProfesor != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push" style="margin-top: 7px;"><button mat-raised-button color="warn" (click)="delete()" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table id="content" #content mat-table [dataSource]="dataSource" matSort multiTemplateDataRows >
+
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let teacherOnRealization;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(teacherOnRealization) : null"  
+                                  [checked]="selection.isSelected(teacherOnRealization)" 
+                                  [aria-label]="checkboxLabel(teacherOnRealization)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container>
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let teacherOnRealization">
+                  <td mat-cell> {{teacherOnRealization.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="brojCasova">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: black;"> Broj casova </th>
+                <ng-container *matCellDef="let teacherOnRealization">
+                  <td mat-cell> {{teacherOnRealization.brojCasova}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="professor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Professor </th>
+                <ng-container *matCellDef="let teacherOnRealization">
+                  <td mat-cell> {{teacherOnRealization.professor.user.name}} {{teacherOnRealization.professor.user.surname}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="typeOfTeaching">
+                <th mat-header-cell *matHeaderCellDef> Tip nastave </th>
+                <td mat-cell *matCellDef="let teacherOnRealization">
+                  <span id="tip" *ngFor="let typeOfTeachings of teacherOnRealization.typeOfTeaching; let isLast=last">{{typeOfTeachings.naziv}}{{isLast ? '' : ', '}}</span>
+                </td>
+              </ng-container>
+              <div >
+              <ng-container matColumnDef="actions" >
+                <th mat-header-cell  [hidden]="show" *matHeaderCellDef> Actions </th>
+                <ng-container *matCellDef="let teacherOnRealization">
+                  <td mat-cell>
+                    <div class="example-button-row">
+                      <button mat-icon-button color="primary" (click)="selectForChange(teacherOnRealization)" title="Edit object">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === teacherOnRealization ? null : teacherOnRealization); $event.stopPropagation()">
+                        <mat-icon *ngIf="expandedElement !== teacherOnRealization">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="expandedElement === teacherOnRealization">keyboard_arrow_up</mat-icon>
+                      </button>
+                    </div>
+                </td>
+                </ng-container>
+              </ng-container>
+            </div>
+        
+      
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let teacherOnRealization" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="teacherOnRealization == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="example-element-description" *ngFor="let subjectRealization of teacherOnRealization.subjectRealization">
+                        <span *ngIf="teacherOnRealization.subjectRealization" class="example-element-description-attribution"> Predmet:</span> {{subjectRealization.subject.naziv}}
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+              <tr mat-row *matRowDef="let teacherOnRealization; columns: columnsToDisplayWithExpand;"
+                  class="example-element-row"
+                  [class.example-expanded-row]="expandedElement === teacherOnRealization"
+                  (click)="expandedElement = expandedElement === teacherOnRealization ? null : teacherOnRealization">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of teacher on realization"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>
+
+<button mat-raised-button color="primary" (click)="exportPDF()" style="margin-top: 20px; margin-left: 20px;">Export table to PDF</button>
+<button mat-raised-button color="primary" style="margin-top: 20px; margin-left: 20px;" (click)="exportXML()">Export data to XML</button>

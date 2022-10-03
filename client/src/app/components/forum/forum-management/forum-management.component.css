@@ -1,0 +1,113 @@
+.example-full-width {
+    width: 30%;
+  }
+  
+  
+  .block {
+    display: inline-block;
+    margin-right: 10px;
+  }
+  
+  .cross {
+    font-size: 20px;
+    color:#000;
+    cursor: pointer;
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  .row {
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  
+  tr.example-detail-row {
+    height: 0;
+  }
+  
+  tr.example-element-row:not(.example-expanded-row):hover {
+    background: whitesmoke;
+  }
+  .mat-row:hover {
+    background-color: rgb(206, 203, 203);
+  }
+  
+  
+  tr.example-element-row:not(.example-expanded-row):active {
+    background: #efefef;
+  }
+  
+  .example-element-row td {
+    border-bottom-width: 0;
+  }
+  
+  .example-element-detail {
+    overflow: hidden;
+    display: flex;
+  }
+  
+  .example-element-diagram {
+    min-width: 80px;
+    border: 2px solid black;
+    padding: 8px;
+    font-weight: lighter;
+    margin: 8px 0;
+    height: 104px;
+  }
+  
+  .example-element-symbol {
+    font-weight: bold;
+    font-size: 40px;
+    line-height: normal;
+  }
+  
+  .example-element-description {
+    padding: 16px;
+  }
+  
+  .example-element-description-attribution {
+    opacity: 0.5;
+  }
+  
+  .box {
+    display: flex;
+  }
+  
+  .push {
+    margin-left: auto;
+  }
+  
+  /* Search input */
+  .has-search .form-control {
+    padding-left: 2.375rem;
+  }
+  
+  .has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+  }
+  
+  .cross {
+    margin-left: 8px;
+    font-size: 25px;
+    color:#000;
+    cursor: pointer;
+  }
+  
+  ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.59em 0px !important; }
+  ::ng-deep .mat-form-field-label-wrapper { top: -1.2em; }
+  
+  ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+      transform: translateY(-1.1em) scale(.75);
+      width: 133.33333%;
+  }

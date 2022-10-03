@@ -1,0 +1,126 @@
+<div class="container">
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  
+      <header>
+        <nav>
+          <ol class="breadcrumb repo-breadcrumb">
+            <li *ngIf="role == 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+            <li *ngIf="role != 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/professor" [routerLink]="['/professor']" class="router-link-active">Professor board</a></li>
+          </ol> 
+        </nav>
+          
+        <div class="box">
+          <div style="margin-top: 8px;">
+            <button mat-raised-button color="primary" (click)="addNew()">Add teaching material</button>
+          </div>
+          <div>
+            <form [formGroup]="searchForm">
+
+              <div class="form-group has-search block">
+                <span class="fa fa-search form-control-feedback"></span>
+                <input type="text" class="form-control" formControlName="searchNaziv" (keyup)="applyFilter()" placeholder="Naziv">
+              </div>
+
+              <mat-form-field appearance="outline" style="margin-left: 8px; top: 3px;">
+                <mat-label>Autor</mat-label>
+                <input type="text" placeholder="Ex. Petar Petrovic" matInput [formControl]="myControl" [matAutocomplete]="auto">
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+  
+              <div class="block" *ngIf="this.searchNaziv != '' || this.searchAutor !=''">
+                <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+              </div>
+            </form>
+          </div>
+            <div class="push" style="margin-top: 8px;"><button mat-raised-button color="warn" (click)="delete()" title="Delete selected objects" *ngIf="role == 'ROLE_ADMINISTRATOR'">Delete</button>
+          </div>
+        </div>
+  
+          <div class="mat-elevation-z8">
+              <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+  
+                <!-- Checkbox Column -->  
+                <ng-container matColumnDef="select">  
+                  <th mat-header-cell *matHeaderCellDef>  
+                      <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                    [checked]="selection.hasValue() && isAllSelected()"  
+                                    [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                    color="primary"></mat-checkbox>  
+                  </th>  
+                  <td mat-cell *matCellDef="let teachingMaterial;">  
+                      <mat-checkbox (click)="$event.stopPropagation()"
+                                    (change)="$event ? selection.toggle(teachingMaterial) : null"  
+                                    [checked]="selection.isSelected(teachingMaterial)" 
+                                    [aria-label]="checkboxLabel(teachingMaterial)"
+                                    color="primary"></mat-checkbox>  
+                  </td>  
+                </ng-container> 
+  
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                  <ng-container *matCellDef="let teachingMaterial">
+                    <td mat-cell> {{teachingMaterial.id}} </td>
+                  </ng-container>
+                </ng-container> 
+            
+                <ng-container matColumnDef="naziv">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Naziv </th>
+                  <ng-container *matCellDef="let teachingMaterial">
+                    <td mat-cell> {{teachingMaterial.naziv}} </td>
+                  </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="godinaIzdavanja">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Godina izdavanja </th>
+                  <ng-container *matCellDef="let teachingMaterial">
+                    <td mat-cell> {{teachingMaterial.godinaIzdavanja}} </td>
+                  </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="autori">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> Autori </th>
+                  <ng-container *matCellDef="let teachingMaterial">
+                    <td mat-cell>
+                      <ng-container *ngFor="let autor of teachingMaterial.autori; let isLast=last">{{autor}}{{isLast ? '' : ', '}}</ng-container>
+                    </td>
+                  </ng-container>
+                </ng-container>
+  
+                <ng-container matColumnDef="file">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header> File </th>
+                  <ng-container *matCellDef="let teachingMaterial">
+                    <td mat-cell> {{teachingMaterial.file.opis}} </td>
+                  </ng-container>
+                </ng-container>
+        
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Actions </th>
+                    <ng-container *matCellDef="let teachingMaterial">
+                        <td mat-cell>
+                            <div class="example-button-row">
+                              <button mat-icon-button color="primary" (click)="selectForChange(teachingMaterial);">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                            </div>
+                        </td>
+                    </ng-container>
+                  </ng-container>
+          
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let teachingMaterial; columns: displayedColumns;"
+                      (click)="selection.toggle(teachingMaterial)"></tr>
+                </table>
+            
+              <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of teaching material"></mat-paginator>
+            </div>
+
+            <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+      </header>
+  </div>

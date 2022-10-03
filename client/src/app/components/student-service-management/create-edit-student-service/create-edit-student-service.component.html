@@ -1,0 +1,67 @@
+<div class="container">
+    <header>
+
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/studentservicetable" [routerLink]="['/studentservicetable']" class="router-link-active">Student service management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditStudent.value.id == null" style="text-align: center;">Add new student</h2>
+            <h2 *ngIf="formCreateEditStudent.value.id != null" style="text-align: center;">Edit student (ID: {{formCreateEditStudent.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditStudent" novalidate>
+                    <div class="form-group">
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Students</mat-label>
+                        <mat-select formControlName="student" [compareWith]="comparator" (selectionChange)="checkExistsStudentByStudyProgrammeAndYear()" required>
+                            <mat-option *ngFor="let s of student" [value]="s">{{s.indexNo}} - {{s.student.user.name}} {{s.student.user.surname}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/studentontheyeartable/createedit']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+                    
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Study programme</mat-label>
+                        <mat-select formControlName="studyProgrammes" (selectionChange)="selectProgramme(); checkExistsStudentByStudyProgrammeAndYear();" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let program of programme" [value]="program">{{program.name}} </mat-option >
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/studyprogrammetable/createeditstudyprogramme']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Year of study</mat-label>
+                        <mat-select formControlName="year" [compareWith]="comparator" multiple (selectionChange)="checkExistsStudentByStudyProgrammeAndYear()" required>
+                            <mat-option *ngFor="let y of year" [value]="y">{{y.year | date:'yyyy-MM-dd'}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/yeartable/createedit']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+                
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="saveStudent()" *ngIf="formCreateEditStudent.value.id == null">Add new year</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="saveStudent()" *ngIf="formCreateEditStudent.value.id != null">Edit year</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

@@ -1,0 +1,263 @@
+<div class="container">
+  <header>
+
+    <div class="col-md-12">
+
+      <nav style="clear:both;"> 
+        <ol class="breadcrumb repo-breadcrumb">
+          <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+          <li class="breadcrumb-item"><a href="/userstable" [routerLink]="['/userstable']" class="router-link-active">User management</a></li>
+        </ol> 
+      </nav>
+
+      <div class="card card-container">
+        <img id="profile-img" src="//ssl.gstatic.com/accounts/ui/avatar_2x.png" class="profile-img-card"/>
+        <mat-horizontal-stepper [linear]="true" #stepper>
+          <mat-step [stepControl]="formCreateEditUser" [editable]="true">
+            <ng-template matStepLabel>User data</ng-template>
+            <form [formGroup]="formCreateEditUser" novalidate>
+              <div class="form-group">
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Name</mat-label>
+                  <input matInput type="text" name="name" formControlName="name" class="example-full-width" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Surname</mat-label>
+                  <input matInput type="text" name="surname" formControlName="surname" class="example-full-width" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Username</mat-label>
+                  <input matInput type="text" name="username" formControlName="username" class="example-full-width" required (input)="checkUserUsername()">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Email</mat-label>
+                  <input matInput placeholder="pat@example.com" formControlName="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" (input)="checkUserEmail()">
+                  <mat-error [hidden]="!formCreateEditUser.controls['email'].errors?.pattern">Please enter correct format</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width" *ngIf="formCreateEditUser.value.id == null">
+                  <mat-label>Password</mat-label>
+                  <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
+                  <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+                    <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+
+                  <mat-form-field appearance="outline" class="example-full-width">
+                    <mat-label>Role</mat-label>
+                    <mat-select formControlName="roles" [compareWith]="comparator" (selectionChange)="refreshCheckRolesProfessorAndStudent($event.source.value)" multiple required>
+                        <mat-option *ngFor="let role of roles" [value]="role">{{role.name}} </mat-option>
+                    </mat-select>
+                </mat-form-field>
+              </div>
+
+
+              <div class="form-group">
+                <button class="btn btn-primary btn-block" matStepperNext [disabled]="this.checkUser == false" >Next</button>
+                <button type="button" (click)="cancel()" mat-raised-button class="btn-block">Cancel</button>
+              </div>
+              <div class="alert alert-warning" *ngIf="isSignUpFailed">
+                Failed!<br />{{ errorMessage }}
+              </div>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="formCreateEditProfessorAndStudent" [editable]="true" *ngIf="checkRolesExistProfessorsOrStudentsBoolean == true">
+            <ng-template matStepLabel>User details</ng-template>
+            <form [formGroup]="formCreateEditProfessorAndStudent" novalidate>
+              <div class="form-group">
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>User</mat-label>
+                  <input matInput class="example-full-width" value="{{formCreateEditUser.value.name}} {{formCreateEditUser.value.surname}}" readonly>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>JMBG</mat-label>
+                  <input matInput #jmbg name="jmbg" maxlength="13" formControlName="jmbg" class="example-full-width" pattern="\d{13}" (input)="checkJMBG()" required>
+                  <mat-hint align="end"> {{jmbg.value.length}} / 13</mat-hint>
+                  <mat-error [hidden]="!formCreateEditProfessorAndStudent.controls['jmbg'].errors?.pattern">JBMG must have 13 numbers</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Date of birth</mat-label>
+                  <input matInput type="date" name="dateOfBirth" formControlName="dateOfBirth" class="example-full-width">
+                </mat-form-field>
+
+                <form [formGroup]="formCreateEditAddress" novalidate>
+                  <table class="example-full-width" cellspacing="0">
+                    <tr>
+                      <td><mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>Country</mat-label>
+                          <mat-select required formControlName="country">
+                            <mat-option *ngFor="let country of countrys" (click)="selectCountry(country)" [ngValue]="country" [value]="country">{{ country }} </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                    </td>
+                    <td>
+                      <mat-form-field class="example-full-width" appearance="outline">
+                        <mat-label>City</mat-label>
+                          <mat-select formControlName="city">
+                            <mat-option *ngFor="let city of citys" [ngValue]="city" [value]="city">{{ city }} </mat-option>
+                          </mat-select>
+                      </mat-form-field>
+                      </td>
+                        <td><mat-form-field style="width: 80%;" appearance="outline">
+                          <mat-label>Street and number</mat-label>
+                          <input matInput type="text" name="streetAndNumber" formControlName="streetAndNumber">
+                        </mat-form-field>
+                      </td>
+                    </tr>
+                  </table>
+                </form>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Telephone</mat-label>
+                  <input type="number" name="phoneNumber" formControlName="phoneNumber" matInput placeholder="063-555-1234">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width" *ngIf="checkRolesIsStudent == false">
+                  <mat-label>Biography</mat-label>
+                  <textarea matInput name="biography" formControlName="biography"></textarea>
+                </mat-form-field>
+
+                <div class="form-group">
+                  <button class="btn btn-primary btn-block" [disabled]="this.checkJmbg == false" matStepperNext>Next</button>
+                  <button mat-raised-button class="btn-block" matStepperPrevious>Back</button>
+                </div>
+
+                <div class="alert alert-warning" *ngIf="isSignUpFailed">
+                  Failed!<br />{{ errorMessage }}
+                </div>
+              </div>
+            </form>
+          </mat-step>
+
+          <mat-step [stepControl]="formCreateEditRanks" [editable]="true" *ngIf="checkRolesExistProfessorsOrStudentsBoolean == true && checkRolesIsStudent == false">
+            <ng-template matStepLabel>Ranks</ng-template>
+            <form [formGroup]="formCreateEditRanks" novalidate>
+              <mat-accordion multi>
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    <mat-icon>library_add</mat-icon>
+                  </mat-panel-title>
+                  <mat-panel-description>Add new rank</mat-panel-description>
+                </mat-expansion-panel-header>
+            
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Type ranks</mat-label>
+                  <mat-select formControlName="typeRanks" [compareWith]="comparator" >
+                    <mat-option *ngFor="let typeRanks of typeRanksAll" [value]="typeRanks">{{typeRanks.name}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Scientific area </mat-label>
+                  <mat-select formControlName="scientificArea" [compareWith]="comparator" >
+                    <mat-option *ngFor="let scientificArea of scientificAreas" [value]="scientificArea" (click)="errorMessage = ''; isCreateRankFailed = false;">{{scientificArea.name}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Election date</mat-label>
+                  <input matInput type="date" name="electionDate" formControlName="electionDate" class="example-full-width">
+                </mat-form-field>
+ 
+                <mat-form-field appearance="outline" class="example-full-width">
+                  <mat-label>Termination date</mat-label>
+                  <input matInput type="date" name="terminationDate" formControlName="terminationDate" class="example-full-width">
+                </mat-form-field>
+
+                <div>
+                  <button *ngIf="formCreateEditRanks.value.id == null" (click)="saveRank();">Save rank</button>
+                  <button *ngIf="formCreateEditRanks.value.id != null" (click)="saveRank();">Edit rank</button>
+                  <button mat-button (click)="cancelCreateEditRanks(); accordion.closeAll();">Cancel</button>
+                </div>
+
+                <div class="alert alert-warning" *ngIf="isCreateRankFailed">
+                  Failed!<br />{{ errorMessage }}
+                </div>
+
+              </mat-expansion-panel>
+              </mat-accordion>
+
+              <hr>
+
+              <section class="example-container mat-elevation-z8" tabindex="0">
+                <table mat-table [dataSource]="dataSource">
+              
+                  <ng-container matColumnDef="typeRanks">
+                    <th mat-header-cell *matHeaderCellDef> Type ranks </th>
+                    <td mat-cell *matCellDef="let rank">  {{rank.typeRanks.name}} </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="scientificArea">
+                    <th mat-header-cell *matHeaderCellDef> Scientific area </th>
+                    <td mat-cell *matCellDef="let rank"> {{rank.scientificArea.name}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef> Actions </th>
+                    <ng-container *matCellDef="let rank; let i=index">
+                        <td mat-cell>
+                            <div class="example-button-row">
+                              <button mat-icon-button color="warn" (click)="deleteRank(rank.id)" *ngIf="formCreateEditProfessorAndStudent.value.id != null">
+                                <mat-icon>delete_forever</mat-icon>
+                              </button>
+                              <button mat-icon-button color="warn" (click)="deleteRank(i)" *ngIf="formCreateEditProfessorAndStudent.value.id == null">
+                                <mat-icon>delete_forever</mat-icon>
+                              </button>
+                              <button mat-icon-button color="primary" (click)="editRank(i, rank); accordion.openAll();" *ngIf="formCreateEditProfessorAndStudent.value.id != null">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                              <button mat-icon-button color="primary" (click)="editRankInList(i, rank); accordion.openAll();" *ngIf="formCreateEditProfessorAndStudent.value.id == null">
+                                <mat-icon>edit</mat-icon>
+                              </button>
+                            </div>
+                        </td>
+                    </ng-container>
+                  </ng-container>
+              
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+                </table>
+              </section>
+
+              <div class="form-group">
+                <button class="btn btn-primary btn-block" matStepperNext>Next</button>
+                <button mat-raised-button class="btn-block" matStepperPrevious>Back</button>
+              </div>
+
+            </form>
+          </mat-step>
+          
+          <mat-step>
+            <ng-template matStepLabel>Save</ng-template>
+            <p>Do you want to save the user?</p>
+
+            <div>
+              <button (click)="saveUser()">Save user</button>
+              <button mat-button matStepperPrevious>Back</button>
+            </div>
+
+            <div class="alert alert-warning" *ngIf="isSignUpFailed">
+              Create new user failed!<br />{{ errorMessage }}
+            </div>
+
+            <div class="alert alert-warning" *ngIf="isEditFailed">
+              Edit user failed!<br />{{ errorMessage }}
+            </div>
+
+          </mat-step>
+
+        </mat-horizontal-stepper>
+      </div>
+    </div>
+  </header>
+</div>

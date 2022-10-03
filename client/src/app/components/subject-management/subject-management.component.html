@@ -1,0 +1,161 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li *ngIf="role == 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+          <li *ngIf="role != 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/professor" [routerLink]="['/professor']" class="router-link-active">Professor board</a></li>
+        </ol> 
+      </nav>
+
+      <div class="box">
+        <div>
+          <button mat-raised-button color="primary" (click)="addNew()" *ngIf="role == 'ROLE_ADMINISTRATOR'">Add class subject</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block" style="margin-left: 8px; top: 2.8px;">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control"  formControlName="searchName" (keyup)="applyFilter()" placeholder="Predmet">
+            </div>
+
+            <div class="block" *ngIf="this.searchName != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push"><button mat-raised-button color="warn" (click)="delete()" title="Delete selected objects" *ngIf="role == 'ROLE_ADMINISTRATOR'">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort multiTemplateDataRows>
+
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let subject;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(subject) : null"  
+                                  [checked]="selection.isSelected(subject)" 
+                                  [aria-label]="checkboxLabel(subject)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container> 
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="naziv">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Naziv </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.naziv}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="espb">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ESPB </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.espb}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="obavezan">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Obavezan </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell *ngIf="subject.obavezanBoolean == true"> DA </td>
+                  <td mat-cell *ngIf="subject.obavezanBoolean == false"> NE </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="brojPredavanja">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Broj predavanja </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.brojPredavanja}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="brojVezbi">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Broj vezbi </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.brojVezbi}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="drugiObliciNastave">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Drugi oblici nastave </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.drugiObliciNastave}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="istrazivackiRad">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Istrazivacki rad </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.istrazivackiRad}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="ostaliCasovi">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Ostali casovi </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell> {{subject.ostaliCasovi}} </td>
+                </ng-container>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <ng-container *matCellDef="let subject">
+                  <td mat-cell>
+                    <div class="example-button-row">
+                      <button mat-icon-button color="primary" (click)="selectForChange(subject)" title="Edit Object">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button aria-label="expand row" (click)="(expandedElement = expandedElement === subject ? null : subject); $event.stopPropagation()">
+                        <mat-icon *ngIf="expandedElement !== subject">keyboard_arrow_down</mat-icon>
+                        <mat-icon *ngIf="expandedElement === subject">keyboard_arrow_up</mat-icon>
+                      </button>
+                    </div>
+                  </td>
+                </ng-container>
+              </ng-container>
+
+              <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+              <ng-container matColumnDef="expandedDetail">
+                <td mat-cell *matCellDef="let subject" [attr.colspan]="columnsToDisplayWithExpand.length">
+                  <div class="example-element-detail" [@detailExpand]="subject == expandedElement ? 'expanded' : 'collapsed'">
+                    <div class="example-element-description" *ngFor="let topic of subject.topic">
+                      <span class="example-element-description-attribution"> Topic({{topic.id}}) -- </span>
+                      {{topic.opis}}
+                    </div>
+                  </div>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="columnsToDisplayWithExpand"></tr>
+              <tr mat-row *matRowDef="let subject; columns: columnsToDisplayWithExpand;"
+                  class="example-element-row"
+                  [class.example-expanded-row]="expandedElement === subject"
+                  (click)="expandedElement = expandedElement === subject ? null : subject">
+              </tr>
+              <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of subject"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>

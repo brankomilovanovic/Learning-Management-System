@@ -1,0 +1,15 @@
+.topic-col {
+  min-width: 16em;
+}
+
+.created-col, .last-post-col {
+min-width: 12em;
+}
+
+.box {
+    display: flex;
+  }
+  
+  .push {
+    margin-left: auto;
+  }

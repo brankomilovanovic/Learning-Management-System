@@ -1,0 +1,105 @@
+<div class="container">
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+
+    <header>
+      <nav>
+        <ol class="breadcrumb repo-breadcrumb">
+          <li *ngIf="role == 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+          <li *ngIf="role != 'ROLE_ADMINISTRATOR'" class="breadcrumb-item"><a href="/professor" [routerLink]="['/professor']" class="router-link-active">Professor board</a></li>
+        </ol>  
+      </nav>
+
+      <div class="box">
+        <div style="margin-top: 7px;">
+          <button mat-raised-button color="primary" (click)="addNew()">Add new topic</button>
+        </div>
+        <div>
+          <form [formGroup]="searchForm">
+            <div class="form-group has-search block" style="margin-left: 8px;">
+              <span class="fa fa-search form-control-feedback"></span>
+              <input type="text" class="form-control" formControlName="searchOpis" (keyup)="applyFilter()" placeholder="Opis">
+            </div>
+
+            <mat-form-field appearance="outline" style="top: 2.8px;">
+              <mat-label>Topic type</mat-label>
+              <mat-select formControlName="searchTopicTypes" (selectionChange)="applyFilter()">
+                  <mat-option *ngFor="let topicType of topicTypes" [value]="topicType.naziv">{{topicType.naziv}} </mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <div class="block" *ngIf="this.searchTopicTypes != '' || this.searchOpis != ''">
+              <span class="cross" (click)="resetSearch()" title="Reset search">x</span>
+            </div>
+          </form>
+        </div>
+          <div class="push" style="margin-top: 7px;"><button mat-raised-button color="warn" (click)="delete()" *ngIf="role == 'ROLE_ADMINISTRATOR'" title="Delete selected objects">Delete</button>
+        </div>
+      </div>
+
+        <div class="mat-elevation-z8">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+              <!-- Checkbox Column -->  
+              <ng-container matColumnDef="select">  
+                <th mat-header-cell *matHeaderCellDef>  
+                    <mat-checkbox (change)="$event ? masterToggle() : null"  
+                                  [checked]="selection.hasValue() && isAllSelected()"  
+                                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                                  color="primary"></mat-checkbox>  
+                </th>  
+                <td mat-cell *matCellDef="let topic;">  
+                    <mat-checkbox (click)="$event.stopPropagation()"
+                                  (change)="$event ? selection.toggle(topic) : null"  
+                                  [checked]="selection.isSelected(topic)" 
+                                  [aria-label]="checkboxLabel(topic)"
+                                  color="primary"></mat-checkbox>  
+                </td>  
+              </ng-container>
+
+              <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                <ng-container *matCellDef="let topic">
+                  <td mat-cell> {{topic.id}} </td>
+                </ng-container>
+              </ng-container> 
+          
+              <ng-container matColumnDef="opis">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Opis </th>
+                <ng-container *matCellDef="let topic">
+                  <td mat-cell> {{topic.opis}} </td>
+                </ng-container>
+              </ng-container>
+
+              <ng-container matColumnDef="topicType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Topic type </th>
+                <ng-container *matCellDef="let topic">
+                  <td mat-cell> {{topic.topicType.naziv}} </td>
+                </ng-container>
+              </ng-container>
+      
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> Actions </th>
+                <ng-container *matCellDef="let topic">
+                  <td mat-cell>
+                    <div class="example-button-row">
+                      <button mat-icon-button color="primary" (click)="selectForChange(topic)" title="Edit object">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                    </div>
+                </td>
+                </ng-container>
+              </ng-container>
+      
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let topic; columns: displayedColumns;"
+                  (click)="selection.toggle(topic)"></tr> 
+            </table>
+          
+            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of topic"></mat-paginator>
+          </div>
+
+          <div *ngIf="dataSource?.data.length === 0">No Records Found!</div>
+
+    </header>
+</div>

@@ -1,0 +1,192 @@
+<html>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'>
+  <body>
+    <div class="wrapper">
+        <div style="width: 60%;">
+            <p style="display: inline-block;">Silabus for subject:</p><p style="display: inline-block; font-weight: bold;">{{subject}}</p>
+            <form accept-charset="UTF-8" [formGroup]="formCreateSilabus" novalidate >
+                <textarea matInput #silabus class="form-control" id="text" maxlength="2000" readonly name="silabus" style="resize: none; height: 80%; border:solid 1px black;" formControlName="silabus" placeholder="Edit silabus" rows="20"></textarea>
+                <mat-hint align="end"> {{silabus.value.length}} / 2000</mat-hint>
+            </form>
+        </div>
+        
+        <div style="width: 100%;">
+            <p></p>
+            <br>
+                        <table class="table table-striped table-compact table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Broj predavanja</td>
+                                    <td>{{predmet?.brojPredavanja}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Broj vezbi</td>
+                                    <td>{{predmet?.brojVezbi}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Drugi oblici nastav</td>
+                                    <td>{{predmet?.drugiObliciNastave}}</td>
+                                </tr>
+                                <tr>
+                                    <td>ESPB</td>
+                                    <td>{{predmet?.espb}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Istazivacki rad</td>
+                                    <td>{{predmet?.istrazivackiRad}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Obavezan</td>
+                                    <td>
+                                        <span *ngIf="predmet?.obavezan == true">Da</span>
+                                        <span *ngIf="predmet?.obavezan == false">Ne</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Ostali casovi</td>
+                                    <td>{{predmet?.ostaliCasovi}}</td>
+                                </tr>
+                            </tbody>
+                        </table>  
+
+                        <p style="font-weight: bold;">Nastavni materijal:</p>
+                        <section style="border: 0.1em solid rgb(226, 221, 221);">
+                            <table mat-table [dataSource]="predmet?.topic">
+                            <ng-container matColumnDef="naziv">
+                                <th mat-header-cell *matHeaderCellDef> Naziv </th>
+                                <td mat-cell *matCellDef="let topic">  {{topic.teachingMaterial.naziv}} </td>
+                            </ng-container>
+                            
+                            <ng-container matColumnDef="godinaIzdavanja">
+                                <th mat-header-cell *matHeaderCellDef> Godina izdavanja </th>
+                                <td mat-cell *matCellDef="let topic"> {{topic.teachingMaterial.godinaIzdavanja}} </td>
+                            </ng-container>
+        
+                            <ng-container matColumnDef="autori">
+                                <th mat-header-cell *matHeaderCellDef> Autori </th>
+                                <td mat-cell *matCellDef="let topic"> {{topic.teachingMaterial.autori}} </td>
+                            </ng-container>
+
+                            <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                            <tr mat-row *matRowDef="let topic; columns: displayedColumns;" (click)="goFile(topic.teachingMaterial.file.url)"></tr>
+                              
+                            </table>
+                        </section>
+            </div> 
+        </div>
+        <button class="btn btn-sm btn-info" type="button" (click)="history()">Student history</button>
+        <div>
+            <section style="border: 0.1em solid rgb(226, 221, 221); margin-top: 10px;" *ngIf="evaluationKnowledges.length != 0">
+                <h2>Pokrenuti testovi znanja:</h2>
+                <table mat-table [dataSource]="evaluationKnowledges">
+                <ng-container matColumnDef="naziv">
+                    <th mat-header-cell *matHeaderCellDef> Predmet </th>
+                    <td mat-cell *matCellDef="let evaluationKnowledge">  {{evaluationKnowledge.subjectRealization.subject.naziv}} </td>
+                </ng-container>
+                
+                <ng-container matColumnDef="tipEvaluacije">
+                    <th mat-header-cell *matHeaderCellDef> Tip evaluacije </th>
+                    <td mat-cell *matCellDef="let evaluationKnowledge"> {{evaluationKnowledge.typeEvaluation.tipEvaluacije}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="vremePocetka">
+                    <th mat-header-cell *matHeaderCellDef> Vreme pocetka </th>
+                    <td mat-cell *matCellDef="let evaluationKnowledge"> {{evaluationKnowledge.vremePocetka | date:'d MMM yyyy, HH:mm'}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="bodovi">
+                    <th mat-header-cell *matHeaderCellDef> maksimalno bodova </th>
+                    <td mat-cell *matCellDef="let evaluationKnowledge"> {{evaluationKnowledge.bodovi}} </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumnsEvaluationKnowledges; sticky: true"></tr>
+                <tr mat-row *matRowDef="let evaluationKnowledge; columns: displayedColumnsEvaluationKnowledges;" (click)="doTest(evaluationKnowledge);"></tr>
+                  
+                </table>
+            </section>
+        </div>
+        
+            <div class="table-responsive" style="margin-top: 10px;">    
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel hideToggle>
+                      <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            Subject notifications
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            Click to see more
+                            <mat-icon>dehaze</mat-icon>
+                        </mat-panel-description>
+                      </mat-expansion-panel-header>
+                      <section class="example-container mat-elevation-z8" tabindex="0">
+                        <table mat-table [dataSource]="dataSourceNotifications" matSort>
+                      
+                          <ng-container matColumnDef="id">
+                            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.id}} </td>
+                          </ng-container>
+                      
+                          <ng-container matColumnDef="naziv">
+                            <th mat-header-cell *matHeaderCellDef> Naziv </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.naziv}} </td>
+                          </ng-container>
+                      
+                          <ng-container matColumnDef="opis">
+                            <th mat-header-cell *matHeaderCellDef> Opis </th>
+                            <td mat-cell *matCellDef="let notifications"> {{notifications.opis}} </td>
+                          </ng-container>
+                      
+                          <tr mat-header-row *matHeaderRowDef="displayedColumnsNotifications; sticky: true"></tr>
+                          <tr mat-row *matRowDef="let notifications; columns: displayedColumnsNotifications;" (click)="editNotification(notifications)"></tr>
+                        </table>
+                      </section>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>  
+    </body>
+</html>
+<br>
+<div class="wrapper" *ngIf="klik">
+    <div class="table-responsive" style="width: 60%;">    
+                <table class="table table-striped table-compact table-bordered">
+                    <tbody>
+                        <tr>
+                          <td>Prosecna ocena za sve predmete</td>
+                          <td>{{bodovi}}</td>
+                        </tr>
+                        <div *ngFor="let x of test">
+                        <b><p style="margin-top:10px ; padding-left: 10px;">Polaganja: {{x.subject.naziv}}</p></b>
+                        <tr>
+                          <td>Obavezan</td>
+                          <td>
+                              <span *ngIf="x.subject?.obavezan == true">Da</span>
+                              <span *ngIf="x.subject?.obavezan == false">Ne</span>
+                          </td>
+                        </tr>
+                        
+                        <div style="margin-top:10px ; padding-left: 10px;"*ngFor="let x of test"></div>
+                          <tr>  
+                            <td>Ispit</td>
+                            <td>{{x?.ispit}}</td>
+                          </tr>
+                          <tr>  
+                            <td>Ocena</td>
+                            <td>{{x?.ocena}}</td>
+                          </tr>
+                      </div>
+                      <div *ngFor="let x of upisi">
+                        <b><p style="margin-top:10px ; padding-left: 10px;">Upisi</p></b>
+                        <tr>
+                          <td>Studijski programi</td>
+                          <td>{{x.studyProgrammes.name}}</td>
+                        </tr>
+                        <tr>
+                          <td>Godina studija</td>
+                          <td *ngFor="let y of x.year">{{ y.year| date:'yyyy-MM-dd'}}</td>
+                        </tr>
+                      </div>
+                    </tbody>
+                </table>                                    
+    </div> 
+
+  <div>

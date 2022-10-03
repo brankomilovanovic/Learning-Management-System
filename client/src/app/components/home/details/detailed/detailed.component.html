@@ -1,0 +1,102 @@
+<!-- <div>
+<p>detailed works!</p>
+<p>{{object.naziv}}</p>
+</div> -->
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+<div class="example-label">
+    <div class="example-button-row">
+        <br>
+      <button style="margin-left:-100px" mat-raised-button color="basic" (click)="back()" >Back</button>
+    </div>
+    </div>
+
+<div class="definition" style="font-size: 20px; margin-top: 50px; margin-left: 80px;">
+
+
+
+    <h1 *ngIf="object?.name">| {{object.name}}</h1>
+    <h1 *ngIf="object?.naziv">| {{object.naziv}}</h1>
+    <p *ngIf="object?.address"><i class="fa fa-map-marker" ></i> Location: {{object.address.country}} {{object.address.city}} {{object.address.streetAndNumber}}</p>
+  
+    <p *ngIf="object?.contactDetails"><i class="fa fa-volume-control-phone" ></i> Contact phone number: {{object.contactDetails}}</p>
+    <p *ngIf="object?.establishmentDate"><i class="fa fa-calendar"></i> Date of establishment: {{object.establishmentDate}}</p>
+
+    <p *ngIf="object?.headmaster"><i class="fa fa-user"></i> Headmaster: {{object.headmaster.user.name}} {{object.headmaster.user.surname}}</p>
+    <p *ngIf="object?.dean"><i class="fa fa-user"></i> Dean: {{object.dean.user.name}} {{object.dean.user.surname}}</p>
+    <p *ngIf="object?.director"><i class="fa fa-user"></i> Director: {{object.director.user.name}} {{object.director.user.surname}}</p>
+
+    <p *ngIf="object?.espb"><i class="fa fa-file-text-o"></i> ESPB Points: {{object.espb}}</p>
+    <p *ngIf="object?.brojPredavanja"><i class="fa fa-hashtag"></i> Number of classes: {{object.brojPredavanja}}</p>
+    <p *ngIf="object?.brojVezbi"><i class="fa fa-hashtag"></i> Number of practices: {{object.brojVezbi}}</p>
+    <p *ngIf="object?.obavezan"><i class="fa fa-exclamation"></i> Obligatory: Yes</p>
+
+
+
+    <p *ngIf="object?.description" style="padding-top: 30px;  width: 400px; float: left;">{{object.description}}</p>
+    <p *ngIf="object?.silabus" style="padding-top: 30px;  width: 400px; float: left;">{{object.silabus}}</p>
+
+    
+    <!-- <p *ngIf="object.faculty" style="color: blue">{{object.headmaster.user.name}}</p> -->
+    <div class="bgDiv"></div>
+    <div class="iconPics" *ngIf="object?.dean" ><i class="fa fa-graduation-cap fa-5x"></i></div>
+    <div class="iconPics" *ngIf="object?.headmaster"  ><i class="fa fa-university fa-5x"></i></div>
+    <div class="iconPics" *ngIf="object?.director" ><i class="fa fa-book fa-5x"></i></div>
+    <div class="iconPics" *ngIf="object?.espb"><i class="fa fa-star-o fa-5x"></i></div>
+
+
+<div class="cont" *ngIf="object?.headmaster">
+    <mat-accordion>
+        <mat-expansion-panel >
+            <mat-expansion-panel-header style="background-color:rgb(207, 186, 155)">
+                <mat-panel-title>
+                    <i class="fa fa-graduation-cap fa">Faculty</i>
+                    
+                </mat-panel-title>
+                <mat-panel-description>
+            
+        </mat-panel-description>
+    </mat-expansion-panel-header >
+        <p *ngFor="let f of object.faculty" (click)="newOb(f)">{{f.name}}</p>
+    </mat-expansion-panel>
+    </mat-accordion>
+    <br>
+    </div>
+
+    <div class="cont" *ngIf="object?.dean">
+        <mat-accordion>
+            <mat-expansion-panel >
+                <mat-expansion-panel-header style="background-color:rgb(207, 186, 155)">
+                    <mat-panel-title>
+                        <i class="fa fa fa-book fa">Study Programmes</i>
+                        
+                    </mat-panel-title>
+                    <mat-panel-description>
+                
+            </mat-panel-description>
+        </mat-expansion-panel-header >
+            <p *ngFor="let sp of object.studyProgrammes" (click)="newOb(sp)">{{sp.name}}</p>
+        </mat-expansion-panel>
+        </mat-accordion>
+        <br>
+        </div>
+
+        <div class="cont" *ngIf="object?.director">
+            <mat-accordion *ngFor="let y of object.yearOfStudy">
+                <mat-expansion-panel >
+                    <mat-expansion-panel-header style="background-color:rgb(207, 186, 155)">
+                        <mat-panel-title>
+                            <i class="fa fa fa-star-o fa">Subjects</i>
+                            
+                        </mat-panel-title>
+                        <mat-panel-description>
+                    
+                </mat-panel-description>
+            </mat-expansion-panel-header >
+                <p *ngFor="let sa of y.subjects" (click)="newOb(sa)">{{sa.naziv}}</p>
+            </mat-expansion-panel>
+            </mat-accordion>
+            <br>
+            </div>
+
+  </div>
+  

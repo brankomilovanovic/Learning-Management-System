@@ -1,0 +1,182 @@
+<div id="app">
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+      <div>
+      <div id="main">
+        <button class="openbtn" (click)="openNav()" *ngIf="roleProfessorOrAdmin">&#9776; Menu</button>
+      </div>
+    </div>
+      <a href="#" class="navbar-brand">Learning Management System</a>
+
+      <ul class="navbar-nav mr-auto" routerLinkActive="active">
+
+        <li class="nav-item">
+          <a href="/home" class="nav-link" routerLink="home">Home</a>
+        </li>
+
+        <li class="nav-item" *ngIf="roleAdmin">
+          <a href="/administrator" class="nav-link" routerLink="administrator">Administrator Board</a>
+        </li>
+
+        <div class="nav-item" *ngIf="roleProfessorOnly">
+          <button mat-button [matMenuTriggerFor]="menuProfessor" class="nav-link">Professor menu</button>
+          <mat-menu #menuProfessor="matMenu">
+            <button mat-menu-item href="/rankstable" routerLink="rankstable">My ranks</button>
+            <button mat-menu-item href="/professor" routerLink="professor">Professor board</button>
+          </mat-menu>
+        </div>
+
+        <li class="nav-item" *ngIf="roleStudent">
+          <a href="/user" class="nav-link" *ngIf="isLoggedIn" routerLink="user">Student Board</a>
+        </li>
+
+        <li class="nav-item" *ngIf="forum?.javni == true || roleProfessorOrAdmin">
+            <a href="/forum" class="nav-link" routerLink="forum">Forum</a>
+        </li>
+
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="!isLoggedIn">
+        <li class="nav-item">
+          <a href="/register" class="nav-link" routerLink="register">Sign Up</a>
+        </li>
+        <li class="nav-item">
+          <a href="/login" class="nav-link" routerLink="login">Login</a>
+        </li>
+      </ul>
+  
+      <ul class="navbar-nav ml-auto" *ngIf="isLoggedIn">
+
+        <li class="nav-item" style="margin-right: 3px; margin-top: 5px;" *ngIf="roleStudent">
+          <button style="background-color: transparent; color: #FFFFFF80; border: 0px; outline: 0;"
+            [matMenuTriggerFor]="menu" #menuTrigger="matMenuTrigger" (click)="menuTrigger.openMenu()">
+            <mat-icon matBadge="{{subjectNotifications.length}}" [matBadgeHidden]="subjectNotifications.length == 0">notifications</mat-icon>
+          </button>
+
+          <mat-menu #menu="matMenu" [overlapTrigger]="false" xPosition="before">
+            <span (mouseleave)="menuTrigger.closeMenu()">
+              <ul>
+                <li style="padding-right: 20px; font-weight: bold;" *ngIf="subjectNotifications.length == 0">Have no new notifications</li>
+                <li style="padding-right: 20px;" *ngFor="let subjectNotification of subjectNotifications;">
+                  <button type="button" style="border: 0px; outline: 0;" (click)="menuTrigger.closeMenu(); readNotifications(subjectNotification);">
+                    <span class="focusNotification">{{subjectNotification.naziv}}</span>
+                  </button>
+                </li>
+              </ul>
+            </span>
+          </mat-menu>
+        </li>
+
+        <li class="nav-item">
+          <a href="/profile" class="nav-link" routerLink="profile">{{ username }}</a>
+        </li>
+        <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">Log Out</a>
+        </li>
+      </ul>
+    </nav>
+    <div>
+      
+    </div>    
+
+    <div id="mySidebar" class="sidebar">
+      <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+      
+      <button class="dropdown-btn">Users
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a [routerLink]="['/userstable']" *ngIf="roleProfessorOrAdmin">Users management</a>
+      </div>
+
+      <br>
+
+      <button class="dropdown-btn" [hidden]="!roleAdmin">Students
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a [routerLink]="['/studentontheyeartable']" *ngIf="roleAdmin">Students index management</a>
+        <br>
+        <a [routerLink]="['/studentservicetable']" *ngIf="roleAdmin">Student Service management</a>
+      </div>
+
+      <br *ngIf="roleAdmin">
+
+      <button class="dropdown-btn" [hidden]="!roleAdmin">Professors 
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <br>
+        <a [routerLink]="['/typerankstable']" *ngIf="roleAdmin">Type ranks</a>
+        <br>
+        <a [routerLink]="['/scientificareatable']" *ngIf="roleAdmin">Scientific areas</a>
+        <br>
+        <a [routerLink]="['/rankstable']" *ngIf="roleAdmin">Ranks management</a>
+        <br>
+        <a  [routerLink]="['/teacheronrealizationtable']" *ngIf="roleAdmin">Teacher on realization</a>
+        <br>
+      </div>
+
+      <br *ngIf="roleAdmin">
+
+      <button class="dropdown-btn" >Subjects
+        <i class="fa fa-caret-down"></i>
+      </button>
+      <div class="dropdown-container">
+        <a [routerLink]="['/subjecttable']" *ngIf="roleProfessorOrAdmin">Subject management</a>
+        <br>
+        <a [routerLink]="['/subjectrealizationtable']" *ngIf="roleAdmin">Subject realization management</a>
+        <br *ngIf="roleAdmin">
+        <a [routerLink]="['/teachingmaterialtable']" *ngIf="roleProfessorOrAdmin">Teaching material management</a> 
+        <br> 
+        <a [routerLink]="['/classtimetable']" *ngIf="roleProfessorOrAdmin">Class time management</a>
+        <br>
+        <a [routerLink]="['/topictable']" *ngIf="roleProfessorOrAdmin">Topic management</a>    
+    </div>
+
+    <br>
+
+    <button class="dropdown-btn" >Evaluation
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a [routerLink]="['/evaluationknowledgetable']" *ngIf="roleProfessorOrAdmin">Evaluation knowledge management</a>
+      <br>
+      <a [routerLink]="['/evaluationinstrumenttable']" *ngIf="roleProfessorOrAdmin">Evaluation instrument management</a>
+      <br>
+      <a [routerLink]="['/filetable']" *ngIf="roleProfessorOrAdmin">File management</a>
+      <br>
+      <a [routerLink]="['/educationgoaltable']" *ngIf="roleProfessorOrAdmin">Education goal management</a>
+    </div>
+
+    <br>
+
+    <button class="dropdown-btn">University
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-container">
+      <a [routerLink]="['/universitytable']" *ngIf="roleProfessorOrAdmin">University management</a>
+      <br>
+      <a [routerLink]="['/facultytable']" *ngIf="roleProfessorOrAdmin">Faculty management</a>
+      <br>
+      <a [routerLink]="['/studyprogrammetable']" *ngIf="roleProfessorOrAdmin">Study programme management</a>
+      <br *ngIf="roleAdmin">
+      <a [routerLink]="['/yeartable']" *ngIf="roleAdmin">Year of study management</a>
+  </div>
+
+  <br *ngIf="roleAdmin">
+
+  <button class="dropdown-btn" [hidden]="!roleAdmin">Forum
+    <i class="fa fa-caret-down"></i>
+  </button>
+  <div class="dropdown-container">
+    <a [routerLink]="['/forumtable']" *ngIf="roleAdmin">Forum management</a>
+  </div>
+
+  </div>
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+
+
+

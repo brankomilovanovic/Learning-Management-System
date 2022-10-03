@@ -1,0 +1,73 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/rankstable" [routerLink]="['/rankstable']" class="router-link-active">Rank management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditRanks.value.id == null" style="text-align: center;">Add new rank</h2>
+            <h2 *ngIf="formCreateEditRanks.value.id != null" style="text-align: center;">Edit rank (ID: {{formCreateEditRanks.value.id}} | {{formCreateEditRanks.value.scientificArea.name}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreateEditRanks" novalidate>
+
+                    <!-- SET PROFESSOR -->
+                    <mat-form-field appearance="outline" style="width: 92%;" *ngIf="formCreateEditRanks.value.id == null || role == 'ROLE_ADMINISTRATOR'">
+                        <mat-label>Professor</mat-label>
+                        <mat-select formControlName="professor" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let professor of professors" [value]="professor"  (click)="setProfessorForAddRank(professor)">{{professor.user.name}} {{professor.user.surname}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" *ngIf="formCreateEditRanks.value.id == null || role == 'ROLE_ADMINISTRATOR'" [routerLink]="['/userstable/createedituser']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <!-- SET TYPE RANKS -->
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Type ranks</mat-label>
+                        <mat-select formControlName="typeRanks" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let typeRanks of typeRanksAll;" [value]="typeRanks">{{typeRanks.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" *ngIf="formCreateEditRanks.value.id == null || role == 'ROLE_ADMINISTRATOR'" [routerLink]="['/typerankstable/createeditrank']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <!-- SET SCIENTIFIC AREA -->
+                    <mat-form-field appearance="outline" style="width: 92%;" *ngIf="role == 'ROLE_ADMINISTRATOR'">
+                        <mat-label>Scientific area </mat-label>
+                        <mat-select formControlName="scientificArea" [compareWith]="comparator" required>
+                            <mat-option *ngFor="let scientificArea of scientificAreas" [value]="scientificArea" (click)="errorMessage = ''; isCreateRankFailed = false;">{{scientificArea.name}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" *ngIf="formCreateEditRanks.value.id == null || role == 'ROLE_ADMINISTRATOR'" [routerLink]="['/scientificareatable/createeditscientificarea']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Election date</mat-label>
+                        <input matInput type="date" name="electionDate" formControlName="electionDate" class="example-full-width" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Termination date</mat-label>
+                        <input matInput type="date" name="terminationDate" formControlName="terminationDate" class="example-full-width">
+                    </mat-form-field>
+
+                    <div>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditRanks.value.id == null" (click)="saveRank();">Save rank</button>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditRanks.value.id != null" (click)="saveRank();">Edit rank</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancelCreateEditRanks();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isCreateRankFailed">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

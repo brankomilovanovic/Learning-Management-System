@@ -1,0 +1,40 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/filetable" [routerLink]="['/filetable']" class="router-link-active">File management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditFile.value.id == null" style="text-align: center;">Add new file</h2>
+            <h2 *ngIf="formCreateEditFile.value.id != null" style="text-align: center;">Edit file (ID: {{formCreateEditFile.value.id}})</h2>
+            <div class="card card-container">
+                <form [formGroup]="formCreateEditFile" novalidate>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Opis</mat-label>
+                        <input type="text" name="opis" formControlName="opis" matInput>
+                    </mat-form-field>
+                    <!-- (change)="existFileByURL()" -->
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>URL</mat-label>
+                        <input type="text"  name="url" formControlName="url"  matInput>
+                    </mat-form-field>
+
+                    <div>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditFile.value.id == null" (click)="save();">Save file</button>
+                        <button class="btn btn-primary btn-block" type="submit" *ngIf="formCreateEditFile.value.id != null" (click)="save();">Edit file</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel();">Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isFaild">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+            </div>
+        </div>
+    </header>
+</div>

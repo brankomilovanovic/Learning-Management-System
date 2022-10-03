@@ -1,0 +1,56 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/teacheronrealizationtable" [routerLink]="['/teacheronrealizationtable']" class="router-link-active">Teacher on realization management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditTeacherOnRealization.value.id == null" style="text-align: center;">Add new teacher on realization</h2>
+            <h2 *ngIf="formCreateEditTeacherOnRealization.value.id != null" style="text-align: center;">Edit teacher on realization (ID: {{formCreateEditTeacherOnRealization.value.id}})</h2>
+                    
+            <div class="card card-container">
+                <form [formGroup]="formCreateEditTeacherOnRealization" novalidate>
+
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Broj casova</mat-label>
+                            <input matInput type="number" name="brojCasova" formControlName="brojCasova" class="example-full-width" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="width: 92%;">
+                            <mat-label>Professor</mat-label>
+                            <mat-select formControlName="professor" (selectionChange)="refreshProfessorAndTypeOfTeaching($event.source.value.id)" [compareWith]="comparator" required>
+                                <mat-option *ngFor="let professor of professors" [value]="professor">{{professor.user.name}} {{professor.user.surname}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button type="button" [routerLink]="['/userstable/createedituser']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Tip nastave</mat-label>
+                            <mat-select formControlName="typeOfTeaching" [compareWith]="compare" multiple required>
+                                <mat-option *ngFor="let typeOfTeaching of typeOfTeachingAll" [value]="typeOfTeaching">{{typeOfTeaching.naziv}} </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditTeacherOnRealization.value.id == null">Add teacher on realization</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditTeacherOnRealization.value.id != null">Edit teacher on realization</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+
+                    <div class="alert alert-warning" *ngIf="isCreateFailed">
+                        Failed!<br />{{ errorMessage }}
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </header>
+</div>

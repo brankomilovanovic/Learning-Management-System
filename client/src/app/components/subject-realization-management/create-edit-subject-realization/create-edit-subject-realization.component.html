@@ -1,0 +1,57 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/subjectrealizationtable" [routerLink]="['/subjectrealizationtable']" class="router-link-active">Subject realization management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditSubjectRealization.value.id == null" style="text-align: center;">Add new subject realization</h2>
+            <h2 *ngIf="formCreateEditSubjectRealization.value.id != null" style="text-align: center;">Edit subject realization (ID: {{formCreateEditSubjectRealization.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditSubjectRealization" novalidate>
+                    <div class="form-group">
+
+                        <mat-form-field appearance="outline" style="width: 92%;">
+                            <mat-label>Predmet</mat-label>
+                            <mat-select formControlName="subject" [compareWith]="comparator" (selectionChange)="checkProfessorExistForThisSubject()" required>
+                                <mat-option *ngFor="let subject of subjects" [value]="subject">{{subject.naziv}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button type="button" [routerLink]="['/subjecttable/createeditsubject']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                        <mat-form-field appearance="outline" style="width: 92%;">
+                            <mat-label>Professor</mat-label>
+                            <mat-select formControlName="teacherOnRealization" [compareWith]="comparator" (selectionChange)="checkProfessorExistForThisSubject()" required>
+                                <mat-option  *ngFor="let teacherOnRealization of teacherOnRealizations" [value]="teacherOnRealization"> {{teacherOnRealization.professor.user.name}} {{teacherOnRealization.professor.user.surname}} : 
+                                    <ng-container *ngFor="let typeOfTeaching of teacherOnRealization.typeOfTeaching; let isLast=last">
+                                        {{typeOfTeaching.naziv}}{{isLast ? '' : ', '}}
+                                    </ng-container>
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button type="button" [routerLink]="['/teacheronrealizationtable/createeditteacheronrealization']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditSubjectRealization.value.id == null">Add new subject realization</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditSubjectRealization.value.id != null" >Edit subject realization</button>
+                    <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

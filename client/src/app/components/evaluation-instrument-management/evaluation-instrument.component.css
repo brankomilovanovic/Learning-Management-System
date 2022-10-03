@@ -1,0 +1,61 @@
+table {
+  width: 100%;
+}
+    
+.mat-cell {
+  padding: 12px 12px 12px 0;
+}
+
+.mat-row {
+  height: auto;
+}
+
+.mat-header-cell{
+  width: 5px;
+}
+
+.mat-raised-button {
+  margin: 0px 8px 0px 0px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.block {
+  display: inline-block;
+}
+
+.mat-row:hover {
+  background-color: rgb(206, 203, 203);
+}
+
+.box {
+  display: flex;
+}
+
+.push {
+  margin-left: auto;
+}
+
+/* Search input */
+.has-search .form-control {
+  padding-left: 2.375rem;
+}
+
+.has-search .form-control-feedback {
+  position: absolute;
+  z-index: 2;
+  display: block;
+  width: 2.375rem;
+  height: 2.375rem;
+  line-height: 2.375rem;
+  text-align: center;
+  pointer-events: none;
+  color: #aaa;
+}
+
+.cross {
+  margin-left: 8px;
+  font-size: 25px;
+  color:#000;
+  cursor: pointer;
+}

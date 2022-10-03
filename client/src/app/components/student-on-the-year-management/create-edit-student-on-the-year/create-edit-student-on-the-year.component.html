@@ -1,0 +1,56 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/studentontheyeartable" [routerLink]="['/studentontheyeartable']" class="router-link-active">Student on the year management</a></li>
+                </ol> 
+              </nav>
+
+            <h2 *ngIf="formCreateEditStudentOnTheYear.value.id == null" style="text-align: center;">Add new student on the year</h2>
+            <h2 *ngIf="formCreateEditStudentOnTheYear.value.id != null" style="text-align: center;">Edit student on the year (ID: {{formCreateEditStudentOnTheYear.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditStudentOnTheYear" novalidate>
+                    <div class="form-group">
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Date of entry</mat-label>
+                            <input matInput type="date" name="dateOfEntry" (change)="checkStudentOnYear()" formControlName="dateOfEntry" class="example-full-width" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Index number</mat-label>
+                            <input matInput type="text" name="indexNo" formControlName="indexNo" (change)="checkIndexNo()" class="example-full-width" required>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" style="width: 92%;">
+                            <mat-label>Student</mat-label>
+                            <mat-select formControlName="student"  (selectionChange)="checkStudentOnYear()" [compareWith]="compare">
+                                <mat-option *ngFor="let student of students" [value]="student">{{student.jmbg}} : {{student.user.name}} {{student.user.surname}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <button type="button" [routerLink]="['/userstable/createedituser']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                            <mat-icon>add_box</mat-icon>
+                        </button>
+
+                    </div>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditStudentOnTheYear.value.id == null" [disabled]="this.isCreateFailed == true">Add new student</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditStudentOnTheYear.value.id != null" [disabled]="this.isCreateFailed == true">Edit student</button>
+                        <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>

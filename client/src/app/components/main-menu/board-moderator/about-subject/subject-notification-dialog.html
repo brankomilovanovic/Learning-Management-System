@@ -1,0 +1,25 @@
+<h1 mat-dialog-title *ngIf="formCreateEditNotification.value.id == null">Add new notification:</h1>
+<h2 mat-dialog-title *ngIf="formCreateEditNotification.value.id != null">Notification for subject: <span style="font-weight: bold;">{{formCreateEditNotification.value.subject.naziv}}</span></h2>
+
+<form [formGroup]="formCreateEditNotification" novalidate>
+  <mat-form-field style="width: 100%;" appearance="outline">
+      <mat-label>Naziv</mat-label>
+      <input type="text" formControlName="naziv" matInput required *ngIf="role == 'ROLE_ACCESS'">
+      <input type="text" formControlName="naziv" matInput readonly *ngIf="role != 'ROLE_ACCESS'">
+    </mat-form-field>
+
+    <mat-form-field style="width: 100%;"appearance="outline">
+      <mat-label>Opis</mat-label>
+      <textarea matInput formControlName="opis" rows="20" required *ngIf="role == 'ROLE_ACCESS'"></textarea>
+      <textarea matInput formControlName="opis" rows="20" readonly *ngIf="role != 'ROLE_ACCESS'"></textarea>
+
+    </mat-form-field>
+
+    <br/>
+    <br/>
+  
+    <div mat-dialog-actions>
+      <button type="submit" mat-raised-button color="primary" (click)="submit()" *ngIf="role == 'ROLE_ACCESS'">Submit</button>
+      <button mat-button class="mat-focus-indicator mat-raised-button mat-button-base mat-raised" (click)="closeDialog()">Close</button>
+    </div>
+  </form>

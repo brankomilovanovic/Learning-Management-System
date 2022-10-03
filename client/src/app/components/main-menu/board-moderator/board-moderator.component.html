@@ -1,0 +1,60 @@
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<div class="container" >
+        <br>
+        <!--<div class="myDIV">Hover over me.</div>
+        <div class="hide">I am shown when someone hovers over the div above.</div>-->
+      <div>
+        <div class="row">
+          
+          <div class="col-12 col-sm-6 col-lg-3 pointer text" *ngFor="let s of subjects" (click)="about(s.subject)">
+            
+            <div class="single_advisor_profile wow fadeInUp" data-wow-delay="0.2s" style="visibility: visible; animation-delay: 0.2s; animation-name: fadeInUp;">
+              
+              <div class="advisor_thumb"><img src="https://www.servicethatsells.com/upload_path/2019/01/01-02-19-LMS.png" alt="" width="250px" height="315px"></div>
+            
+              <div class="single_advisor_details_info">
+                <h2 class="designation">{{s.subject.naziv}}</h2>
+                <br>
+                 <!-- <div class="designation">
+                    <div (click)="details(s.subject)"><b style="color: white;">Details</b></div>
+                    <div *ngIf="kliknut">
+                    <div>
+                      <h3>
+                      <span>Broj predavanja: {{odabran.brojPredavanja}}</span>
+                      <br>
+                      <span>Broj vezbi: {{s.subject.brojVezbi}}</span>
+                      <span>ESPB: {{s.subject.espb}}</span>
+                      <span>Broj vezbi: {{odabran.brojVezbi}}</span>
+                      <br>
+                      <span >Drugi oblici nastave: {{odabran.drugiObliciNastave}}</span>
+                      <br>
+                      <span >ESPB: {{odabran.espb}}</span>
+                      <br>
+                      <span >Istrazivacki rad: {{odabran.istrazivackiRad}}</span>
+                      <br>
+                        <span  *ngIf="odabran.obavezanBoolean == true">Obavezan: Da</span>
+                        <span  *ngIf="odabran.obavezanBoolean == false">Obavezan: Ne</span>
+                      <br>
+                      <span >Ostali casovi: {{odabran.ostaliCasovi}}</span>
+                      <br>
+                      <div *ngFor="let t of odabran.topic">
+                        <span >Tema: {{t?.opis}}</span>
+                      </div>
+                      </h3>
+                      <h2>Tip nastave: </h2>
+                      <h3>
+                      <div *ngFor="let r of s.teacherOnRealization.typeOfTeaching">
+                        <span *ngIf="r.naziv == 'PREDAVANJA'"><b>PREDAVANJA</b></span>
+                        <span *ngIf="r.naziv == 'VEZBE'"><b>VEZBE</b></span>
+                      </div>
+                    </h3>
+                    </div>
+                  </div> -->
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>

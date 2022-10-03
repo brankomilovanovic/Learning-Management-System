@@ -1,0 +1,40 @@
+table {
+    width: 100%;
+  }
+  
+  .row {
+    width: 100%;
+    margin: 0 auto;
+  } 
+  
+  .wrapper {
+    margin-top: 15px;
+    display: flex;
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0 auto;
+    
+  }
+  
+  .mat-cell {
+    padding: 12px 12px 12px 0;
+  }
+  
+  .mat-row {
+    height: auto;
+  }
+  
+  .mat-raised-button {
+    margin: 0px 8px 0px 0px;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .make-gold {
+    background-color: rgb(216, 104, 104);
+  }
+
+
+  

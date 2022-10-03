@@ -1,0 +1,56 @@
+<div class="container">
+    <header>
+        <div class="col-md-12">
+
+            <nav style="clear:both;"> 
+                <ol class="breadcrumb repo-breadcrumb">
+                  <li class="breadcrumb-item"><a href="/administrator" [routerLink]="['/administrator']" class="router-link-active">Administrator board</a></li>
+                  <li class="breadcrumb-item"><a href="/topictable" [routerLink]="['/topictable']" class="router-link-active">Topic management</a></li>
+                </ol> 
+             </nav>
+
+            <h2 *ngIf="formCreateEditTopic.value.id == null" style="text-align: center;">Add new topic</h2>
+            <h2 *ngIf="formCreateEditTopic.value.id != null" style="text-align: center;">Edit topic (ID: {{formCreateEditTopic.value.id}})</h2>
+                    
+            <div class="card card-container">
+
+                <form [formGroup]="formCreateEditTopic" novalidate>
+                    <div class="form-group">
+                        <mat-form-field appearance="outline" class="example-full-width">
+                            <mat-label>Opis</mat-label>
+                            <textarea matInput name="opis" formControlName="opis" required (change)="checkExistsByOpisWithTopicType()"></textarea>
+                        </mat-form-field>
+                    </div>
+
+                    <mat-form-field appearance="outline" class="example-full-width">
+                        <mat-label>Type</mat-label>
+                        <mat-select formControlName="topicType" [compareWith]="compare" (selectionChange)="checkExistsByOpisWithTopicType();" required>
+                            <mat-option *ngFor="let topicType of topicTypes" [value]="topicType">{{topicType.naziv}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" style="width: 92%;">
+                        <mat-label>Teaching material</mat-label>
+                        <mat-select formControlName="teachingMaterial" [compareWith]="compare">
+                            <mat-option *ngFor="let teachingMaterial of teachingMaterials" [value]="teachingMaterial">{{teachingMaterial.naziv}} </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button type="button" [routerLink]="['/teachingmaterialtable/craeteeditteachingmaterial']" style="bottom: 3px;" mat-icon-button color="primary" title="Add new">
+                        <mat-icon>add_box</mat-icon>
+                    </button>
+
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditTopic.value.id == null" [disabled]="this.isCreateFailed == true">Add new topic</button>
+                        <button class="btn btn-primary btn-block" type="submit" (click)="save()" *ngIf="formCreateEditTopic.value.id != null" [disabled]="this.isCreateFailed == true">Edit topic</button>
+                    <button mat-raised-button class="btn-block" type="button" (click)="cancel()" >Cancel</button>
+                    </div>
+                </form>
+
+                <div class="alert alert-warning" *ngIf="isFailed">
+                    Failed!<br />{{ errorMessage }}
+                </div>
+
+            </div>
+        </div>
+    </header>
+</div>
