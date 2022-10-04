@@ -5,7 +5,7 @@
 The application enables the administration of staff, students and university study programs.<br>
 Application was implemented as a web application, which simultaneously represents the university's website.<br>
 Participants in the system are students, teachers and administrators, but also unregistered users can visit the university page and forum.<br><br>
-The project was made by students, **[Branko Milovanovic](https://www.linkedin.com/in/branko-milovanovic)**, **[Nemanja Katava](https://www.linkedin.com/in/nemanja-katava-37a830197)**, and **[Dusana Mrdjan](https://gitlab.com/wolfmange)**
+The project was made by students, **[Branko Milovanovic](https://www.linkedin.com/in/branko-milovanovic)**, **[Nemanja Katava](https://www.linkedin.com/in/nemanja-katava-37a830197)**, and **[Dusana Mrdjan](https://gitlab.com/wolfmange)**.
 <hr>
 
 ### Dependencies
