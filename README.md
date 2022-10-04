@@ -72,3 +72,27 @@ Participants in the system are students, teachers and administrators, but also u
 <hr>
 
 ### How to build?
+
+**1. Open CMD**
+> Windows (WinKey + R) > enter 'cmd' > navigate to the folder where you want to place the project
+
+or
+
+> Hold Shift + Right-click > Open CMD or PowerShell window here
+
+**2. Clone**
+> git clone https://github.com/brankomilovanovic/Learning-Management-System
+
+**3. Create Database**
+> Open [MySQL Workbench](https://www.mysql.com/products/workbench) > Create Schema > lms-database
+
+**4. Start back end**
+> Open [EclipseIDE](https://www.eclipse.org/ide) > File > Import > Maven > Existing Maven Projects > Root Directory (path to the cloned directory) > Finish
+
+> Expand project and find App.java class > Right-Click on App.java > Run As > Java Application
+
+**5. Front end**
+> Open [Visual Studio Code](https://code.visualstudio.com) > File > Open Folder > Find the cloned directory, and select the client folder.
+
+> Terminal > New Terminal > Set the path to the client folder, it is set automatically by default. > input into the console **npm install** > input into the console **ng serve -o**
+
