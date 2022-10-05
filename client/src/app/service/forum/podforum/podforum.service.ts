@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Podforum } from '../../../model/forum/podforum';
+import { environment } from '../../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/podforum/';
+const URL = environment.apiUrl + 'podforum/';
 
 @Injectable({
   providedIn: 'root'

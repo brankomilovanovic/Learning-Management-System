@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { StudentOnTheYear } from 'src/app/model/student-on-the-year';
 import { StudentService } from 'src/app/model/student-service';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/studentnagodini/';
+const URL = environment.apiUrl + 'studentnagodini/';
 
 @Injectable({
   providedIn: 'root'

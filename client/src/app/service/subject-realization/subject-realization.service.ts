@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SubjectRealization } from '../../model/subject-realization';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/subjectRealization/';
+const URL = environment.apiUrl + 'subjectRealization/';
 
 @Injectable({
   providedIn: 'root'

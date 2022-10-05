@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TeacherOnRealization } from '../../model/teacher-on-realization';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/teacherOnRealizations/';
+const URL = environment.apiUrl + 'teacherOnRealizations/';
 
 @Injectable({
   providedIn: 'root'

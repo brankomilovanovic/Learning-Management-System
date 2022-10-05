@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TypeEvaluation } from '../../model/type-evaluation';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/typeEvaluations/';
+const URL = environment.apiUrl + 'typeEvaluations/';
 
 @Injectable({
   providedIn: 'root'

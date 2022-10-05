@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { followSub } from 'src/app/model/followSub';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/followsub/';
+const URL = environment.apiUrl + 'followsub/';
 
 @Injectable({
   providedIn: 'root'

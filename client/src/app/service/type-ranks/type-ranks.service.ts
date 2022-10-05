@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TypeRanks } from '../../model/type-ranks';
+import { environment } from '../../../environments/environment.prod';
 
 
-const URL = 'http://localhost:8080/api/typeRanks/';
+const URL = environment.apiUrl + 'typeRanks/';
 
 @Injectable({
   providedIn: 'root'

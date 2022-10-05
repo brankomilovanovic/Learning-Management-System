@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Tema } from '../../../model/forum/tema';
+import { environment } from '../../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/tema/';
+const URL = environment.apiUrl + 'tema/';
 
 @Injectable({
   providedIn: 'root'

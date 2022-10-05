@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ClassTime } from 'src/app/model/class-time';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/classTimes/';
+const URL = environment.apiUrl + 'classTimes/';
 
 @Injectable({
   providedIn: 'root'

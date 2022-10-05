@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../../environments/environment.prod';
 
-const URL = 'http://localhost:8080/api/mail/';
+const URL = environment.apiUrl + 'mail/';
 
 @Injectable({
   providedIn: 'root'

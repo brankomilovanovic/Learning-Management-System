@@ -3,9 +3,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Year } from 'src/app/model/year';
+import { environment } from '../../../environments/environment.prod';
 
 
-const URL = 'http://localhost:8080/api/godinastudija/';
+const URL = environment.apiUrl + 'godinastudija/';
 @Injectable({
   providedIn: 'root'
 })

@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { University } from '../../model/university';
+import { environment } from '../../../environments/environment.prod';
 
 
-const SP_URL = 'http://localhost:8080/api/universities/';
+const SP_URL = environment.apiUrl + 'universities/';
 
 @Injectable({
   providedIn: 'root'

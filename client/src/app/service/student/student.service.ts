@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Student } from '../../model/student';
+import { environment } from '../../../environments/environment.prod';
 
-const STUD_URL = 'http://localhost:8080/api/students/';
+const STUD_URL = environment.apiUrl + 'students/';
 
 @Injectable({
   providedIn: 'root'
