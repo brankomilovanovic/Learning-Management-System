@@ -13,7 +13,7 @@ The project was made by students, **[Branko Milovanovic](https://www.linkedin.co
 - [Angular 10+](https://angular.io)
 
 🚀 **Back end**
-- [Java Spring Boot](https://spring.io/projects/spring-boot)
+- [Java Spring Boot (Java 17)](https://spring.io/projects/spring-boot)
 - [MySQL](https://www.mysql.com/)
 
 <hr>
