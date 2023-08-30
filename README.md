@@ -18,15 +18,6 @@ The project was made by students, **[Branko Milovanovic](https://www.linkedin.co
 
 <hr>
 
-### Test the application
-🧮 **[Learning Management System LIVE DEMO!](http://lm-system.s3-website.eu-central-1.amazonaws.com)**
-<br><br>
-Admin Login:
-> username: **admin**<br>
-password: **123**, every default user have password 123
-
-<hr>
-
 ### Functionality overview
 - **Unregistered users:**
   - They can review the university page and see basic information.
