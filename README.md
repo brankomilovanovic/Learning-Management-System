@@ -47,24 +47,24 @@ The project was made by students, **[Branko Milovanovic](https://www.linkedin.co
 
 ### Little preview
 <p align="center">
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859384-a67977db-2e2d-48c3-9a97-1f5e194ffd9d.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859342-00cb6f9e-cd3e-44f3-9f9a-88d48947bf9c.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859349-f021b10f-4c95-4ba4-9c54-6594d514dccf.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859351-f438913f-b691-424c-8399-4b4d8da4fd0e.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859352-cf853274-624c-48bb-9f26-e28a7bac9cdf.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859353-7917b6ff-722e-45ac-a463-c0b9bef4e023.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859355-695d3084-3847-4f61-ab21-01941b6d1c3f.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859365-d1a81a11-ca04-4123-bc72-71ef64b9129e.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859381-9b6d1bbd-f344-4e40-b892-591598d118b7.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859376-9cffa29f-0ce7-463e-b827-56879eba75d0.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859379-aad600a3-52c5-4538-a98c-9cc3b9092cbd.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859367-7977d485-a5ad-4a74-bcd9-1e302aedfb30.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859374-9165cb51-e562-42c6-93c0-b7b47fa1987f.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859373-ed33e427-d5de-4cef-9490-48ad8435e565.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859363-80adf75c-e2cd-4aee-93ca-df137a117603.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859360-d3346df1-bfd4-44fd-91f6-bcf684e70732.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859358-abe4d9ea-98f1-46ab-8d9d-4ebaa70780dc.png"></kbd><hr>
-<kbd><img src="https://user-images.githubusercontent.com/87083680/193859383-4e4a213e-3002-471a-bc08-21bb04f94fa1.png"></kbd><hr>
+<kbd><portfolio><img src="https://user-images.githubusercontent.com/87083680/193859384-a67977db-2e2d-48c3-9a97-1f5e194ffd9d.png" /></portfolio></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859342-00cb6f9e-cd3e-44f3-9f9a-88d48947bf9c.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859349-f021b10f-4c95-4ba4-9c54-6594d514dccf.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859351-f438913f-b691-424c-8399-4b4d8da4fd0e.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859352-cf853274-624c-48bb-9f26-e28a7bac9cdf.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859353-7917b6ff-722e-45ac-a463-c0b9bef4e023.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859355-695d3084-3847-4f61-ab21-01941b6d1c3f.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859365-d1a81a11-ca04-4123-bc72-71ef64b9129e.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859381-9b6d1bbd-f344-4e40-b892-591598d118b7.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859376-9cffa29f-0ce7-463e-b827-56879eba75d0.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859379-aad600a3-52c5-4538-a98c-9cc3b9092cbd.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859367-7977d485-a5ad-4a74-bcd9-1e302aedfb30.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859374-9165cb51-e562-42c6-93c0-b7b47fa1987f.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859373-ed33e427-d5de-4cef-9490-48ad8435e565.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859363-80adf75c-e2cd-4aee-93ca-df137a117603.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859360-d3346df1-bfd4-44fd-91f6-bcf684e70732.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859358-abe4d9ea-98f1-46ab-8d9d-4ebaa70780dc.png" /></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859383-4e4a213e-3002-471a-bc08-21bb04f94fa1.png" /></kbd><hr>
 </p>
 
 **This is just a small preview of the app.**
