@@ -47,7 +47,8 @@ The project was made by students, **[Branko Milovanovic](https://www.linkedin.co
 
 ### Little preview
 <p align="center">
-<kbd><portfolio><img src="https://user-images.githubusercontent.com/87083680/193859384-a67977db-2e2d-48c3-9a97-1f5e194ffd9d.png" /></portfolio></kbd><hr>
+<kbd><portfolio><img src="https://github.com/brankomilovanovic/Learning-Management-System/assets/87083680/7a2c7232-9fd1-45ea-bf1e-00d995302750" /></portfolio></kbd><hr>
+<kbd><img src="https://user-images.githubusercontent.com/87083680/193859384-a67977db-2e2d-48c3-9a97-1f5e194ffd9d.png" /></kbd><hr>
 <kbd><img src="https://user-images.githubusercontent.com/87083680/193859342-00cb6f9e-cd3e-44f3-9f9a-88d48947bf9c.png" /></kbd><hr>
 <kbd><img src="https://user-images.githubusercontent.com/87083680/193859349-f021b10f-4c95-4ba4-9c54-6594d514dccf.png" /></kbd><hr>
 <kbd><img src="https://user-images.githubusercontent.com/87083680/193859351-f438913f-b691-424c-8399-4b4d8da4fd0e.png" /></kbd><hr>
